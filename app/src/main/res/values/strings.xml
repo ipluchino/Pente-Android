@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Pente</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="title_activity_cointoss">CoinTossActivity</string>
+</resources>
