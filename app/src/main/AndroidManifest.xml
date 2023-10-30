@@ -32,6 +32,12 @@
             android:theme="@style/Theme.Pente">
         </activity>
 
+        <activity
+            android:name=".View.RoundViewActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Pente">
+        </activity>
+
 
     </application>
 

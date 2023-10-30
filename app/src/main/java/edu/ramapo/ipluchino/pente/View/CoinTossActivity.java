@@ -1,5 +1,6 @@
 package edu.ramapo.ipluchino.pente.View;
 
+import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,6 +70,8 @@ public class CoinTossActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("myTag", "Continue was clicked");
+                Intent intent = new Intent(getApplicationContext(), RoundViewActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayoutRoundView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#43D1C5">
+
+    <TextView
+        android:id="@+id/nextTurnTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="10pt"
+        android:text="Next Turn: Human"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.otaliastudios.zoom.ZoomLayout
+        android:layout_width="380dp"
+        android:layout_height="380dp"
+        android:layout_marginTop="84dp"
+        android:scrollbars=""
+        app:alignment="center"
+        app:animationDuration="280"
+        app:flingEnabled="false"
+        app:hasClickableChildren="true"
+        app:horizontalPanEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:maxZoom="2.5"
+        app:maxZoomType="zoom"
+        app:minZoom="1.0"
+        app:minZoomType="zoom"
+        app:oneFingerScrollEnabled="true"
+        app:overPinchable="false"
+        app:overScrollHorizontal="false"
+        app:overScrollVertical="false"
+        app:scrollEnabled="true"
+        app:threeFingersScrollEnabled="true"
+        app:transformation="centerInside"
+        app:transformationGravity="auto"
+        app:twoFingersScrollEnabled="true"
+        app:verticalPanEnabled="true"
+        app:zoomEnabled="true">
+
+        <GridLayout
+            android:id="@+id/buttonsGridLayout"
+            android:layout_width="380dp"
+            android:layout_height="380dp"></GridLayout>
+
+    </com.otaliastudios.zoom.ZoomLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
