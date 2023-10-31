@@ -19,8 +19,6 @@ import edu.ramapo.ipluchino.pente.R;
 public class RoundViewActivity extends AppCompatActivity {
 
     private Round m_round;
-    private ScaleGestureDetector m_scaleGestureDetector;
-    private float m_scaleFactor = 1.0f;
     private GridLayout m_buttonGridLayout;
 
     @Override
@@ -32,35 +30,12 @@ public class RoundViewActivity extends AppCompatActivity {
         m_round = new Round();
         m_buttonGridLayout = findViewById(R.id.buttonsGridLayout);
 
-        // Initialize the ScaleGestureDetector
-        //m_scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
-
         //Initialize the board
         InitializeBoard();
 
         //SET LISTENERS HERE.
 
     }
-
-    /*
-    @Override
-    public boolean onTouchEvent(MotionEvent motionEvent) {
-        m_scaleGestureDetector.onTouchEvent(motionEvent);
-        return true;
-    }
-
-    //https://medium.com/quick-code/pinch-to-zoom-with-multi-touch-gestures-in-android-d6392e4bf52d
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-        @Override
-        public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
-            m_scaleFactor *= scaleGestureDetector.getScaleFactor();
-            m_scaleFactor = Math.max(1.0f, Math.min(m_scaleFactor, 10.0f));
-            m_buttonGridLayout.setScaleX(m_scaleFactor);
-            m_buttonGridLayout.setScaleY(m_scaleFactor);
-            return true;
-        }
-    }
-     */
 
     private void InitializeBoard()
     {
