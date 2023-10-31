@@ -1,23 +1,18 @@
 package edu.ramapo.ipluchino.pente.View;
 
+import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
-import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import android.view.MotionEvent;
+
 import edu.ramapo.ipluchino.pente.Model.Round;
-import edu.ramapo.ipluchino.pente.Model.StrategyConstants;
 
 import edu.ramapo.ipluchino.pente.R;
 
@@ -41,7 +36,7 @@ public class RoundViewActivity extends AppCompatActivity {
         //m_scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
         //Initialize the board
-        InitializeBoardButtons();
+        InitializeBoard();
 
         //SET LISTENERS HERE.
 
@@ -67,45 +62,96 @@ public class RoundViewActivity extends AppCompatActivity {
     }
      */
 
-    private void InitializeBoardButtons()
+    private void InitializeBoard()
     {
+        //Create the column and row headers
+        CreateHeaders();
 
+        //Initialize the individual buttons
         for(int i = 0; i < 19; i++)
         {
             for(int j = 0; j < 19; j++)
             {
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                Button b = new Button(this);
+                Button button = new Button(this);
 
-                // Convert dp to pixels
-                float scale = getResources().getDisplayMetrics().density;
-
-                b.setText("(" + Integer.toString(i) + ", " + Integer.toString(j) + ")");
-                b.setTextColor(Color.BLUE);
-                b.setBackgroundColor(Color.WHITE);
-                params.rowSpec= GridLayout.spec(i);
-                params.columnSpec= GridLayout.spec(j);
-
-                int buttonWidthDp = 380/19; // Change this to your desired dp value
-                int buttonWidthPixels = (int) (buttonWidthDp * scale + 0.5f);
-                int buttonHeightDP = 380/19;
-                int buttonHeightPixels = (int) (buttonHeightDP * scale + 0.5f);
-                int buttonWidth = buttonWidthPixels;
-                int buttonHeight = buttonHeightPixels;
+                button.setTextColor(Color.BLUE);
+                button.setBackgroundColor(Color.WHITE);
+                button.setPadding(0, 0, 0, 0);
 
                 //https://stackoverflow.com/questions/7815689/how-do-you-obtain-a-drawable-object-from-a-resource-id-in-android-package
                 //https://stackoverflow.com/questions/7690416/android-border-for-button
-                b.setBackground(getResources().getDrawable(R.drawable.buttonborder));
+                button.setBackground(getResources().getDrawable(R.drawable.blackborder));
 
-                params.width = buttonWidth;
-                params.height = buttonHeight;
+                //Note: The row and column are incremented by 1 because of the row and column headers.
+                params.rowSpec= GridLayout.spec(i+1);
+                params.columnSpec= GridLayout.spec(j+1);
+                params.width = GenerateCellSize(380/20, this);
+                params.height = GenerateCellSize(380/20, this);
+                params.setMargins(0, 0, 0, 0);
 
-                m_buttonGridLayout.addView(b, params);
-
-
+                m_buttonGridLayout.addView(button, params);
             }
         }
     }
+
+    private void CreateHeaders()
+    {
+        //Generate the column headers.
+        for (int col = 0; col < 19; col++)
+        {
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            TextView colHeader = new TextView(this);
+
+            //Set the TextView object's parameters.
+            colHeader.setText(Character.toString((char)('A' + col)));
+            colHeader.setBackground(getResources().getDrawable(R.drawable.blackborder));
+            colHeader.setGravity(Gravity.CENTER);
+            colHeader.setPadding(0, 0, 0, 0);
+
+            //Set the GridLayout Parameters.
+            params.rowSpec= GridLayout.spec(0);
+            params.columnSpec= GridLayout.spec(col+1);
+            params.height = GenerateCellSize(380/20, this);
+            params.width = GenerateCellSize(380/20, this);
+            params.setMargins(0, 0, 0, 0);
+
+            m_buttonGridLayout.addView(colHeader, params);
+        }
+
+        //Generate the row headers
+        for (int row = 0; row < 19; row++)
+        {
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            TextView rowHeader = new TextView(this);
+
+            //Set the TextView object's parameters.
+            rowHeader.setText(Integer.toString(19-row));
+            rowHeader.setBackground(getResources().getDrawable(R.drawable.blackborder));
+            rowHeader.setGravity(Gravity.CENTER);
+            rowHeader.setPadding(0, 0, 0, 0);
+
+            //Set the GridLayout Parameters.
+            params.rowSpec= GridLayout.spec(row+1);
+            params.columnSpec= GridLayout.spec(0);
+            params.height = GenerateCellSize(380/20, this);
+            params.width = GenerateCellSize(380/20, this);
+            params.setMargins(0, 0, 0, 0);
+
+            m_buttonGridLayout.addView(rowHeader, params);
+        }
+
+    }
+
+    private int GenerateCellSize(int a_dpToConvert, Context a_context)
+    {
+        //Convert dp to its pixel representation.
+        float scale = a_context.getResources().getDisplayMetrics().density;
+        int pixelRepresentation = (int) (a_dpToConvert * scale + 0.5f);
+
+        return pixelRepresentation;
+    }
+
 
     private String createButtonID(int row, int col) {
         char columnLabel = (char) ('A' + col);
