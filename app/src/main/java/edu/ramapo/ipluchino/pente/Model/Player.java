@@ -66,9 +66,9 @@ public class Player {
 
     //Utility Functions
     //Override in Human and Computer class.
-    public boolean MakePlay(Board a_board, String a_Location)
+    public String MakePlay(Board a_board, String a_Location)
     {
-        return true;
+        return "";
     }
 
     public String ExtractLocation(int a_row, int a_col, Board a_board)

@@ -2,4 +2,7 @@
     <string name="app_name">Pente</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="title_activity_cointoss">CoinTossActivity</string>
+    <item type="id" name="row" />
+    <item type="id" name="column" />
+    <item type="id" name="stonePlaced" />
 </resources>

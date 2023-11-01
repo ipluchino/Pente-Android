@@ -99,5 +99,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/placeStoneButtonComputer"
+        android:layout_width="170dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="596dp"
+        android:text="Computer Place Stone"
+        android:textColor="@color/black"
+        android:textSize="6pt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.186"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/saveAndExitButtonComputer"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="596dp"
+        android:text="Save &amp; Exit"
+        android:textColor="@color/black"
+        android:textSize="6pt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.819"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

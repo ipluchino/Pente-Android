@@ -7,10 +7,8 @@ public class Human extends Player {
     public Human() { }
 
     //CONVERT RETURN VALUE TO STRING OR VECTOR? SO THE HUMAN PLAY HISTORY CAN BE SAVED?
-    public boolean MakePlay(Board a_board, String a_location)
+    public String MakePlay(Board a_board, String a_location)
     {
-        //Validate location!!!
-
         //Place the stone on the board.
         a_board.PlaceStone(a_location.charAt(0), Integer.parseInt(a_location.substring(1)), m_color);
 
@@ -18,7 +16,8 @@ public class Human extends Player {
         int captures = a_board.ClearCaptures(a_location.charAt(0), Integer.parseInt(a_location.substring(1)), m_color);
         m_capturedPairs += captures;
 
-        return true;
+        String playMade = "The human placed their stone on " + a_location + ".";
+        return playMade;
     }
 
     public String AskForHelp(Board a_board)

@@ -307,6 +307,36 @@ public class Round {
         System.out.println("Points scored by the Computer this round: " + computerRoundScore);
     }
 
+    public String PlayTurn(String a_location)
+    {
+        //Let the player make their move.
+        String move = m_playerList.get(m_nextPlayerIndex).MakePlay(m_board, a_location);
+
+        //Switch turns so the correct player plays next.
+        SetNextPlayerIndex((m_nextPlayerIndex + 1) % NUM_PLAYERS);
+
+        return move;
+    }
+
+    public char StoneAt(int row, int col)
+    {
+        Vector<Vector<Character>> board = m_board.GetBoard();
+        return board.get(row).get(col);
+    }
+
+    public boolean ScoresTied()
+    {
+        return GetHumanScore() == GetComputerScore();
+    }
+
+    public boolean IsHumanTurn()
+    {
+        return m_nextPlayerIndex == 0;
+    }
+
+
+
+
 
     public static void main(String[] args)
     {

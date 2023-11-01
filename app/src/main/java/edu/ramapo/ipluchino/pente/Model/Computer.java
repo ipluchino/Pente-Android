@@ -7,7 +7,7 @@ public class Computer extends Player {
     public Computer() { }
 
     //CONVERT RETURN VALUE TO STRING OR VECTOR? SO THE EXPLANATION IS RETURNED.
-    public boolean MakePlay(Board a_board, String a_location)
+    public String MakePlay(Board a_board, String a_location)
     {
         Vector<String> playInfo = OptimalPlay(a_board, m_color);
         String location = playInfo.get(0);
@@ -16,14 +16,11 @@ public class Computer extends Player {
         //Place the stone on the board.
         a_board.PlaceStone(location.charAt(0), Integer.parseInt(location.substring(1)), m_color);
 
-        //Explain the play to the user.
-        System.out.println(reasoning);
-
         //Clear any captures and update the player's capture count, if any occur.
         int captures = a_board.ClearCaptures(location.charAt(0), Integer.parseInt(location.substring(1)), m_color);
         m_capturedPairs += captures;
 
-        return true;
+        return reasoning;
     }
 
     public static void main(String[] args)
@@ -32,7 +29,6 @@ public class Computer extends Player {
         Computer c = new Computer();
 
         c.MakePlay(b, "");
-
     }
 }
 
