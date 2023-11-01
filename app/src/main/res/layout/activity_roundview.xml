@@ -58,5 +58,46 @@
 
     </com.otaliastudios.zoom.ZoomLayout>
 
+    <Button
+        android:id="@+id/placeStoneButtonHuman"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="480dp"
+        android:text="Place Stone"
+        android:textColor="@color/black"
+        android:textSize="6pt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/getHelpButton"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="480dp"
+        android:text="Get Help"
+        android:textColor="@color/black"
+        android:backgroundTint="@android:color/transparent"
+        android:background="@drawable/blackborder"
+        android:textSize="6pt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/saveAndExitButtonHuman"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="480dp"
+        android:text="Save &amp; Exit"
+        android:textColor="@color/black"
+        android:textSize="6pt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.945"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,12 @@
 package edu.ramapo.ipluchino.pente.View;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -11,6 +15,9 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import java.util.Vector;
 
 import edu.ramapo.ipluchino.pente.Model.Round;
 
@@ -20,6 +27,9 @@ public class RoundViewActivity extends AppCompatActivity {
 
     private Round m_round;
     private GridLayout m_buttonGridLayout;
+    private Vector<Vector<Button>> m_locationButtons;
+    private Button m_highlightedButton;
+    private Button m_placeStoneHuman;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +38,40 @@ public class RoundViewActivity extends AppCompatActivity {
 
         //Initialize the round model.
         m_round = new Round();
+        m_locationButtons = new Vector<Vector<Button>>(361);
+        m_highlightedButton = null;
         m_buttonGridLayout = findViewById(R.id.buttonsGridLayout);
+        m_placeStoneHuman = findViewById(R.id.placeStoneButtonHuman);
 
         //Initialize the board
         InitializeBoard();
 
         //SET LISTENERS HERE.
+        m_placeStoneHuman.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (m_highlightedButton == null)
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RoundViewActivity.this);
+                    builder.setTitle("No locations selected!");
+                    builder.setMessage("You must select a location to place your stone before you click the \"Place Stone\" button!");
+
+                    //OK button to clear the alert dialog.
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            //No need to do anything here.
+                        }
+                    });
+
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+                else
+                {
+
+                }
+            }
+        });
 
     }
 
@@ -45,6 +83,7 @@ public class RoundViewActivity extends AppCompatActivity {
         //Initialize the individual buttons
         for(int i = 0; i < 19; i++)
         {
+            Vector<Button> rowOfButtons = new Vector<Button>();
             for(int j = 0; j < 19; j++)
             {
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
@@ -56,7 +95,7 @@ public class RoundViewActivity extends AppCompatActivity {
 
                 //https://stackoverflow.com/questions/7815689/how-do-you-obtain-a-drawable-object-from-a-resource-id-in-android-package
                 //https://stackoverflow.com/questions/7690416/android-border-for-button
-                button.setBackground(getResources().getDrawable(R.drawable.blackborder));
+                button.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.blackborder));
 
                 //Note: The row and column are incremented by 1 because of the row and column headers.
                 params.rowSpec= GridLayout.spec(i+1);
@@ -65,8 +104,31 @@ public class RoundViewActivity extends AppCompatActivity {
                 params.height = GenerateCellSize(380/20, this);
                 params.setMargins(0, 0, 0, 0);
 
+                //Set the onClick listener for the button.
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Reset the current highlighted button, if one exists.
+                        if (m_highlightedButton != null)
+                        {
+                            m_highlightedButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.blackborder));
+                        }
+
+                        //Set the button that was clicked to be highlighted and store it.
+                        view.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.highlightedbutton));
+                        m_highlightedButton = (Button) view;
+
+                    }
+                });
+
                 m_buttonGridLayout.addView(button, params);
+
+                //Add the button to the vector of buttons so it can be referenced later.
+                rowOfButtons.add(button);
             }
+
+            //Add the row of buttons to the main storage vector.
+            m_locationButtons.add(rowOfButtons);
         }
     }
 
