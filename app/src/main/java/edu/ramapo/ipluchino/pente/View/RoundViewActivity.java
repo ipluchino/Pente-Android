@@ -37,6 +37,8 @@ public class RoundViewActivity extends AppCompatActivity {
     private Button m_placeStoneButtonComputer;
     private Button m_saveAndExitButtonComputer;
     private TextView m_nextTurnTextView;
+    private TextView m_humanInformationTextView;
+    private TextView m_computerInformationTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,8 @@ public class RoundViewActivity extends AppCompatActivity {
         m_placeStoneButtonComputer = findViewById(R.id.placeStoneButtonComputer);
         m_saveAndExitButtonComputer = findViewById(R.id.saveAndExitButtonComputer);
         m_nextTurnTextView = findViewById(R.id.nextTurnTextView);
+        m_humanInformationTextView = findViewById(R.id.humanInformationTextView);
+        m_computerInformationTextView = findViewById(R.id.computerInformationTextView);
 
         //TEMPORARY!! WILL BE AUTOMATIC IN THE FUTURE - REMOVED LATER.
         m_round.SetNextPlayerIndex(0);
@@ -91,7 +95,7 @@ public class RoundViewActivity extends AppCompatActivity {
 
                     m_highlightedButton = null;
 
-                    UpdateAllLocationButtons();
+                    UpdateRoundInformation();
                     DisplayComputerComponents();
                 }
             }
@@ -104,7 +108,7 @@ public class RoundViewActivity extends AppCompatActivity {
                 String move = m_round.PlayTurn("");
                 Log.d("myTag", move);
 
-                UpdateAllLocationButtons();
+                UpdateRoundInformation();
                 DisplayHumanComponents();
             }
         });
@@ -306,7 +310,7 @@ public class RoundViewActivity extends AppCompatActivity {
     private String GetHighlightedButtonRow()
     {
         int rowTag = (int) m_highlightedButton.getTag(R.id.row);
-        String boardRow = String.valueOf(19 - rowTag);
+        String boardRow = Integer.toString(19 - rowTag);
 
         return boardRow;
     }
@@ -314,13 +318,27 @@ public class RoundViewActivity extends AppCompatActivity {
     private String GetHighlightedButtonColumn()
     {
         int columnTag = (int) m_highlightedButton.getTag(R.id.column);
-        String boardColumn = String.valueOf((char) (columnTag + 'A'));
+        String boardColumn = Character.toString((char) (columnTag + 'A'));
 
         return boardColumn;
     }
 
-    private void UpdateAllLocationButtons()
+    private void UpdateRoundInformation()
     {
+        //Update the human's round information.
+        int humanScore = m_round.GetHumanScore();
+        int humanCapturedPairs = m_round.GetHumanCapturedPairs();
+
+        String updatedHumanInformation = "Tournament Score: " + humanScore + "\n" + "Captured Pairs: " + humanCapturedPairs;
+        m_humanInformationTextView.setText(updatedHumanInformation);
+
+        //Update the computer's round information.
+        int computerScore = m_round.GetComputerScore();
+        int computerCapturedPairs = m_round.GetComputerCapturedPairs();
+
+        String updatedComputerInformation = "Tournament Score: " + computerScore + "\n" + "Captured Pairs: " + computerCapturedPairs;
+        m_computerInformationTextView.setText(updatedComputerInformation);
+
         //Update all the images on the button to make sure they are correct.
         for (int i = 0; i < 19; i++)
         {

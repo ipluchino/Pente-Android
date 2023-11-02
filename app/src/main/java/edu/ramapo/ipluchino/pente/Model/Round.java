@@ -219,56 +219,48 @@ public class Round {
         }
     }
 
-    //CHANGE RETURN TO VECTOR OR STRING SO IT CAN BE DISPLAYED?
-    public boolean RoundOver()
+    public String RoundOver()
     {
         //If one of the players has achieved five consecutive pieces in any direction, the round is over.
         if (m_board.FiveConsecutive('W'))
         {
             if (GetHumanColor() == 'W')
             {
-                System.out.println("The round has ended because the Human player has five consecutive stones on the board.");
+                return "The round has ended because the Human player has five consecutive stones on the board.";
             }
             else
             {
-                System.out.println("The round has ended because the Computer player has five consecutive stones on the board.");
+                return "The round has ended because the Computer player has five consecutive stones on the board.";
             }
-
-            return true;
         }
         else if (m_board.FiveConsecutive('B'))
         {
             if (GetHumanColor() == 'B')
             {
-                System.out.println("The round has ended because the Human player has five consecutive stones on the board.");
+                return "The round has ended because the Human player has five consecutive stones on the board.";
             }
             else
             {
-                System.out.println("The round has ended because the Computer player has five consecutive stones on the board.");
+                return "The round has ended because the Computer player has five consecutive stones on the board.";
             }
-
-            return true;
         }
         //If one of the players has achieved at least 5 captured pairs, the round is over.
         else if (GetHumanCapturedPairs() >= 5)
         {
-            System.out.println("The round has ended because the Human player has at least 5 captured pairs.");
-            return true;
+            return "The round has ended because the Human player has at least 5 captured pairs.";
         }
         else if (GetComputerCapturedPairs() >= 5)
         {
-            System.out.println("The round has ended because the Computer player has at least 5 captured pairs.");
-            return true;
+            return "The round has ended because the Computer player has at least 5 captured pairs.";
         }
         //If none of the above situations occurred but the board is full, the round is over.
         else if (m_board.IsBoardFull())
         {
-            System.out.println("The round has ended because the board is full.");
-            return true;
+            return "The round has ended because the board is full.";
         }
 
-        //Otherwise, the round can continue.
-        return false;
+        //Otherwise, the round can continue (an empty string in this case means the round is not over).
+        return "";
     }
 
     //Implement later
