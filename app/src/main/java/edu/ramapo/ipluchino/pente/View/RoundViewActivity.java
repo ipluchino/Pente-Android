@@ -71,6 +71,7 @@ public class RoundViewActivity extends AppCompatActivity {
         m_placeStoneButtonHuman.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //The user hasn't selected a location yet.
                 if (m_highlightedButton == null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(RoundViewActivity.this);
                     builder.setTitle("No location selected!");
@@ -85,7 +86,27 @@ public class RoundViewActivity extends AppCompatActivity {
 
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-                } else {
+                }
+                //The user has selected an invalid location.
+                else if (!m_round.ValidMove(GetHighlightedButtonColumn()+GetHighlightedButtonRow()).equals(""))
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RoundViewActivity.this);
+                    builder.setTitle("Invalid Location Selected!");
+                    builder.setMessage(m_round.ValidMove(GetHighlightedButtonColumn()+GetHighlightedButtonRow()));
+
+                    //OK button to clear the alert dialog.
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            //No need to do anything here.
+                        }
+                    });
+
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+                //The location is valid.
+                else
+                {
                     String boardRow = GetHighlightedButtonRow();
                     String boardColumn = GetHighlightedButtonColumn();
                     String location = boardColumn + boardRow;
@@ -96,7 +117,15 @@ public class RoundViewActivity extends AppCompatActivity {
                     m_highlightedButton = null;
 
                     UpdateRoundInformation();
-                    DisplayComputerComponents();
+
+                    if (!m_round.RoundOver().equals(""))
+                    {
+                        RoundCompleted();
+                    }
+                    else
+                    {
+                        DisplayComputerComponents();
+                    }
                 }
             }
         });
@@ -109,7 +138,15 @@ public class RoundViewActivity extends AppCompatActivity {
                 Log.d("myTag", move);
 
                 UpdateRoundInformation();
-                DisplayHumanComponents();
+
+                if (!m_round.RoundOver().equals(""))
+                {
+                    RoundCompleted();
+                }
+                else
+                {
+                    DisplayHumanComponents();
+                }
             }
         });
 
@@ -415,6 +452,33 @@ public class RoundViewActivity extends AppCompatActivity {
         location.add(column);
 
         return location;
+    }
+
+    private void RoundCompleted()
+    {
+        //Explain to the user that the round has ended through a pop-up.
+        AlertDialog.Builder builder = new AlertDialog.Builder(RoundViewActivity.this);
+        builder.setTitle("The round is over!");
+
+        String roundOverMsg = m_round.RoundOver();
+        builder.setMessage(roundOverMsg);
+
+        //OK button to clear the alert dialog.
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //No need to do anything here.
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        //Remove the Human and Computer action buttons from the screen.
+        m_placeStoneButtonHuman.setVisibility(View.GONE);
+        m_getHelpButton.setVisibility(View.GONE);
+        m_saveAndExitButtonHuman.setVisibility(View.GONE);
+        m_placeStoneButtonComputer.setVisibility(View.GONE);
+        m_saveAndExitButtonComputer.setVisibility(View.GONE);
     }
 
 }

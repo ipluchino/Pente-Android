@@ -310,6 +310,24 @@ public class Round {
         return move;
     }
 
+    public String ValidMove(String a_location)
+    {
+        //There is a handicap for the second turn of the first player. The play must be within three intersections of the center piece.
+        boolean handicap = m_board.CountPieces('W') == 1 && m_board.CountPieces('B') == 1;
+
+        if (m_board.IsEmptyBoard() && !a_location.equals("J10"))
+        {
+            return "The first stone of the game must be played on J10!";
+        }
+        else if (handicap && ((a_location.charAt(0) > 'G' && a_location.charAt(0) < 'M') && Integer.parseInt(a_location.substring(1)) > 7 && Integer.parseInt(a_location.substring(1)) < 13))
+        {
+            return "The location must be at least three intersections away from the center (J10) on this turn!";
+        }
+
+        //If the location is valid, return an empty string.
+        return "";
+    }
+
     public char StoneAt(int a_row, int a_col)
     {
         Vector<Vector<Character>> board = m_board.GetBoard();
