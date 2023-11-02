@@ -22,8 +22,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.otaliastudios.zoom.ZoomLayout
-        android:layout_width="380dp"
-        android:layout_height="380dp"
+        android:layout_width="381dp"
+        android:layout_height="381dp"
         android:layout_marginTop="84dp"
         android:scrollbars=""
         app:alignment="center"
@@ -53,8 +53,8 @@
 
         <GridLayout
             android:id="@+id/buttonsGridLayout"
-            android:layout_width="380dp"
-            android:layout_height="380dp"></GridLayout>
+            android:layout_width="381dp"
+            android:layout_height="381dp"></GridLayout>
 
     </com.otaliastudios.zoom.ZoomLayout>
 
@@ -71,15 +71,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/getHelpButton"
         android:layout_width="100dp"
         android:layout_height="80dp"
         android:layout_marginTop="480dp"
         android:text="Get Help"
         android:textColor="@color/black"
-        android:backgroundTint="@android:color/transparent"
-        android:background="@drawable/blackborder"
+
         android:textSize="6pt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

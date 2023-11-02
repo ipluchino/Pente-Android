@@ -56,9 +56,9 @@ public class RoundViewActivity extends AppCompatActivity {
         m_nextTurnTextView = findViewById(R.id.nextTurnTextView);
 
         //TEMPORARY!! WILL BE AUTOMATIC IN THE FUTURE - REMOVED LATER.
-        m_round.SetNextPlayerIndex(1);
-        m_round.SetHumanColor('B');
-        m_round.SetComputerColor('W');
+        m_round.SetNextPlayerIndex(0);
+        m_round.SetHumanColor('W');
+        m_round.SetComputerColor('B');
 
         //Initialize the board
         InitializeBoard();
@@ -106,6 +106,39 @@ public class RoundViewActivity extends AppCompatActivity {
 
                 UpdateAllLocationButtons();
                 DisplayHumanComponents();
+            }
+        });
+
+        m_getHelpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(RoundViewActivity.this);
+                builder.setTitle("Computer's Recommendation:");
+
+                //The vector help is in the form (location, reasoning). The reasoning is what should be displayed to the user.
+                Vector<String> help = m_round.GetHelp();
+                Vector<Integer> helpLocation = ConvertLocation(help.get(0));
+                String helpMsg = help.get(1);
+
+                builder.setMessage(helpMsg);
+
+                //OK button to clear the alert dialog.
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if (m_highlightedButton != null)
+                        {
+                            m_highlightedButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.blackborder));
+                        }
+
+
+                        Button reccomendedButton = m_locationButtons.get(helpLocation.get(0)).get(helpLocation.get(1));
+                        reccomendedButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.highlightedbutton));
+                        m_highlightedButton = reccomendedButton;
+                    }
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
 
@@ -221,6 +254,7 @@ public class RoundViewActivity extends AppCompatActivity {
 
             //Set the TextView object's parameters.
             colHeader.setText(Character.toString((char)('A' + col)));
+            colHeader.setTextColor(Color.BLACK);
             colHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.blackborder));
             colHeader.setGravity(Gravity.CENTER);
             colHeader.setPadding(0, 0, 0, 0);
@@ -243,6 +277,7 @@ public class RoundViewActivity extends AppCompatActivity {
 
             //Set the TextView object's parameters.
             rowHeader.setText(Integer.toString(19-row));
+            rowHeader.setTextColor(Color.BLACK);
             rowHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.blackborder));
             rowHeader.setGravity(Gravity.CENTER);
             rowHeader.setPadding(0, 0, 0, 0);
@@ -322,6 +357,7 @@ public class RoundViewActivity extends AppCompatActivity {
         {
             for (Button button : row)
             {
+                //If the location already has a stone placed on it, make sure to leave the button disabled. Otherwise enable them.
                 boolean stonePlaced = (boolean) button.getTag(R.id.stonePlaced);
                 if (stonePlaced)
                 {
@@ -341,9 +377,26 @@ public class RoundViewActivity extends AppCompatActivity {
         {
             for (Button button : row)
             {
+                //Disable every button.
                 button.setEnabled(false);
             }
         }
+    }
+
+    private Vector<Integer> ConvertLocation(String a_location)
+    {
+        Vector<Integer> location = new Vector<Integer>();
+
+        int row = 19 - Integer.parseInt(a_location.substring(1));
+        int column = (int) (a_location.charAt(0) - 'A');
+
+        //Extract the row and convert it to the correct vector index representation.
+        location.add(row);
+
+        //Extract the column and convert it to the correct vector index representation.
+        location.add(column);
+
+        return location;
     }
 
 }

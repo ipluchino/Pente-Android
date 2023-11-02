@@ -20,14 +20,19 @@ public class Human extends Player {
         return playMade;
     }
 
-    public String AskForHelp(Board a_board)
+    public Vector<String> AskForHelp(Board a_board)
     {
+        Vector<String> result = new Vector<String>();
         Vector<String> playInfo = OptimalPlay(a_board, m_color);
         String explanation = playInfo.get(1);
 
         //Alter the output of the explanation to present it as a suggestion.
         explanation = explanation.replaceFirst("placed", "recommends you place");
-        return explanation;
+
+        //Return the location, along with the explanation in a vector.
+        result.add(playInfo.get(0));
+        result.add(explanation);
+        return result;
     }
 
     public static void main(String[] args)

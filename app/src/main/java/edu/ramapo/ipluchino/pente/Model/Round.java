@@ -318,10 +318,16 @@ public class Round {
         return move;
     }
 
-    public char StoneAt(int row, int col)
+    public char StoneAt(int a_row, int a_col)
     {
         Vector<Vector<Character>> board = m_board.GetBoard();
-        return board.get(row).get(col);
+        return board.get(a_row).get(a_col);
+    }
+
+    public Vector<String> GetHelp()
+    {
+        Human humanPlayer = (Human) m_playerList.get(0);
+        return humanPlayer.AskForHelp(m_board);
     }
 
     public boolean ScoresTied()
