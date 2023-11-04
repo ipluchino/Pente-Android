@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
+import edu.ramapo.ipluchino.pente.Model.Round;
 import edu.ramapo.ipluchino.pente.R;
 
 public class WelcomeActivity extends AppCompatActivity {
@@ -31,6 +32,9 @@ public class WelcomeActivity extends AppCompatActivity {
                 //Switch to the Coin Toss state, since new games always begin with a coin toss.
                 //https://stackoverflow.com/questions/20241857/android-intent-cannot-resolve-constructor
                 Intent intent = new Intent(getApplicationContext(), CoinTossActivity.class);
+
+                //Pass a fresh round object to the Coin Toss Activity.
+                intent.putExtra("round", new Round());
                 startActivity(intent);
             }
         });

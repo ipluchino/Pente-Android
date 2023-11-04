@@ -16,10 +16,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Random;
 
+import edu.ramapo.ipluchino.pente.Model.Round;
 import edu.ramapo.ipluchino.pente.R;
 
 public class CoinTossActivity extends AppCompatActivity {
+    //Constants
+    final int HEADS = 0;
+    final int TAILS = 1;
+
     //Private members
+    private Intent m_intent;
+    private Round m_currentRound;
     private Button m_headsButton;
     private Button m_tailsButton;
     private Button m_continueButton;
@@ -38,6 +45,8 @@ public class CoinTossActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cointoss);
 
         //Initialize the private variables.
+        m_intent = getIntent();
+        m_currentRound = (Round) m_intent.getSerializableExtra("round");
         m_headsButton = findViewById(R.id.headsButton);
         m_tailsButton = findViewById(R.id.tailsButton);
         m_continueButton = findViewById(R.id.continueButton);
@@ -54,7 +63,7 @@ public class CoinTossActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("myTag", "Heads was clicked");
-                CoinToss(0);
+                CoinToss(HEADS);
             }
         });
 
@@ -62,7 +71,7 @@ public class CoinTossActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("myTag", "Tails was clicked");
-                CoinToss(1);
+                CoinToss(TAILS);
             }
         });
 
@@ -70,8 +79,11 @@ public class CoinTossActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("myTag", "Continue was clicked");
-                Intent intent = new Intent(getApplicationContext(), RoundViewActivity.class);
-                startActivity(intent);
+
+                //Pass the round object with the newly set first player to the RoundViewActivity.
+                m_intent = new Intent(getApplicationContext(), RoundViewActivity.class);
+                m_intent.putExtra("round", m_currentRound);
+                startActivity(m_intent);
             }
         });
     }
@@ -103,11 +115,13 @@ public class CoinTossActivity extends AppCompatActivity {
         {
             m_resultTextView.setText("You will go first because you called the toss correctly!");
             m_wonTextView.setVisibility(View.VISIBLE);
+            m_currentRound.SetHumanFirst();
         }
         else
         {
             m_resultTextView.setText("The computer will go first because you called the toss incorrectly!");
             m_lostTextView.setVisibility(View.VISIBLE);
+            m_currentRound.SetComputerFirst();
         }
 
         //Fade the correct image in, and explain to the user if they won or lost.

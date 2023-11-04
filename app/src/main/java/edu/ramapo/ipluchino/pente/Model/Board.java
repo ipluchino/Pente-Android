@@ -1,10 +1,10 @@
 package edu.ramapo.ipluchino.pente.Model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Vector;
 
-public class Board
-{
+public class Board implements Serializable {
     // Holds all the data for the entire board.
     private Vector<Vector<Character>> m_board;
 

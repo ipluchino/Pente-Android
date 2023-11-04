@@ -1,11 +1,12 @@
 package edu.ramapo.ipluchino.pente.Model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Vector;
 import java.util.Random;
 
-public class Player {
+public class Player implements Serializable {
     //The color of the stones (black or white) that the player is playing as.
     protected char m_color;
 

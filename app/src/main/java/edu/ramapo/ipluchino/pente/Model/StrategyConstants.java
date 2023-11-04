@@ -1,9 +1,10 @@
 package edu.ramapo.ipluchino.pente.Model;
 
+import java.io.Serializable;
 import java.util.Vector;
 import java.util.Arrays;
 
-public class StrategyConstants {
+public class StrategyConstants implements Serializable {
     // Size of the board will always be 19x19.
     public static final int BOARD_SIZE = 19;
 

@@ -1,11 +1,12 @@
 package edu.ramapo.ipluchino.pente.Model;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.Vector;
 import java.io.FileReader;
 import java.io.FileWriter;
 
-public class Round {
+public class Round implements Serializable {
     //Constants
     final int NUM_PLAYERS = 2;
     final int HEADS = 1;
@@ -118,10 +119,18 @@ public class Round {
         return m_playerList.get(1).SetCapturedPairs(a_capturedPairs);
     }
 
-    //POTENTIALLY IMPLEMENT - CHANGE TO PLAY HUMAN/COMPUTER TURN? NEED TO DECIDE.
-    public void StartRound()
+    public void SetHumanFirst()
     {
+        SetHumanColor('W');
+        SetComputerColor('B');
+        SetNextPlayerIndex(0);
+    }
 
+    public void SetComputerFirst()
+    {
+        SetComputerColor('W');
+        SetHumanColor('B');
+        SetNextPlayerIndex(1);
     }
 
     //CONSIDER CHANGING VOID TO STRING?
@@ -129,21 +138,14 @@ public class Round {
     {
         //The player who has the higher score gets to play first for the round.
         //If the scores or tied, or a new tournament is started, the first player is determined via coin toss.
-
         if (GetHumanScore() > GetComputerScore())
         {
-            SetHumanColor('W');
-            SetComputerColor('B');
-            SetNextPlayerIndex(0);
-
+            SetHumanFirst();
             System.out.println("You will be going first since you have a higher score.");
         }
         else if (GetComputerScore() > GetHumanScore())
         {
-            SetComputerColor('W');
-            SetHumanColor('B');
-            SetNextPlayerIndex(1);
-
+            SetComputerFirst();
             System.out.println("The computer will be going first because the computer has a higher score.");
         }
         else

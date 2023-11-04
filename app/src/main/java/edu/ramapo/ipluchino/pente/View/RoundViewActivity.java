@@ -26,7 +26,7 @@ import edu.ramapo.ipluchino.pente.Model.Round;
 import edu.ramapo.ipluchino.pente.R;
 
 public class RoundViewActivity extends AppCompatActivity {
-
+    private Intent m_intent;
     private Round m_round;
     private GridLayout m_buttonGridLayout;
     private Vector<Vector<Button>> m_locationButtons;
@@ -45,8 +45,9 @@ public class RoundViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_roundview);
 
-        //Initialize the round model.
-        m_round = new Round();
+        //Initialize the private variables.
+        m_intent = getIntent();
+        m_round = (Round) m_intent.getSerializableExtra("round");
         m_locationButtons = new Vector<Vector<Button>>(361);
         m_highlightedButton = null;
         m_buttonGridLayout = findViewById(R.id.buttonsGridLayout);
@@ -58,11 +59,6 @@ public class RoundViewActivity extends AppCompatActivity {
         m_nextTurnTextView = findViewById(R.id.nextTurnTextView);
         m_humanInformationTextView = findViewById(R.id.humanInformationTextView);
         m_computerInformationTextView = findViewById(R.id.computerInformationTextView);
-
-        //TEMPORARY!! WILL BE AUTOMATIC IN THE FUTURE - REMOVED LATER.
-        m_round.SetNextPlayerIndex(0);
-        m_round.SetHumanColor('W');
-        m_round.SetComputerColor('B');
 
         //Initialize the board
         InitializeBoard();

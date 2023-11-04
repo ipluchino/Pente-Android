@@ -1,5 +1,6 @@
 package edu.ramapo.ipluchino.pente.Model;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 public class Human extends Player {
