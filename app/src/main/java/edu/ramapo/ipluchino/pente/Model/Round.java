@@ -1,5 +1,7 @@
 package edu.ramapo.ipluchino.pente.Model;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Random;
 import java.util.Vector;
@@ -24,7 +26,7 @@ public class Round implements Serializable {
     private int m_nextPlayerIndex;
 
     //File reader/writers to read and write to a file.
-    private FileReader m_fileReader;
+    private BufferedReader m_bufferedReader;
     private FileWriter m_fileWriter;
 
     //Default Constructor
@@ -265,16 +267,228 @@ public class Round implements Serializable {
         return "";
     }
 
-    //Implement later
-    public void SaveGame(String a_fileName)
+    //https://www.w3schools.com/java/java_files_create.asp
+    public void SaveGame(String a_fileName) throws IOException
     {
+        try
+        {
+            m_fileWriter = new FileWriter(a_fileName);
 
+            //Write the board to the file.
+            Vector<Vector<Character>> board = m_board.GetBoard();
+
+            m_fileWriter.write("Board:\n");
+            for (int row = 0; row < board.size(); row++)
+            {
+                for (int col = 0; col < board.size(); col++)
+                {
+                    if (board.get(row).get(col) == '-')
+                    {
+                        m_fileWriter.write('O');
+                    }
+                    else
+                    {
+                        m_fileWriter.write(board.get(row).get(col));
+                    }
+                }
+
+                m_fileWriter.write("\n");
+            }
+
+            //Write the human's game information to the file.
+            m_fileWriter.write("\nHuman:\n");
+            m_fileWriter.write("Captured Pairs: " + GetHumanCapturedPairs() + "\n");
+            m_fileWriter.write("Score: " + GetHumanScore() + "\n\n");
+
+            //Write the computer's game information to the file.
+            m_fileWriter.write("Computer:\n");
+            m_fileWriter.write("Captured Pairs: " + GetComputerCapturedPairs() + "\n");
+            m_fileWriter.write("Score: " + GetComputerScore() + "\n\n");
+
+            //Write the next player's turn to the file.
+            m_fileWriter.write("Next Player: ");
+            if (m_nextPlayerIndex == 0)
+            {
+                m_fileWriter.write("Human - ");
+                if (GetHumanColor() == 'W')
+                {
+                    m_fileWriter.write("White");
+                }
+                else
+                {
+                    m_fileWriter.write("Black");
+                }
+
+            }
+            else
+            {
+                m_fileWriter.write("Computer - ");
+                if (GetComputerColor() == 'W')
+                {
+                    m_fileWriter.write("White");
+                }
+                else
+                {
+                    m_fileWriter.write("Black");
+                }
+            }
+
+            m_fileWriter.close();
+
+            //EXIT APP??? GO TO WELCOME ACTIVITY???
+
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
-    //Implement later
-    public void LoadGameData(String a_fileName)
+    //https://www.baeldung.com/java-buffered-reader
+    public boolean LoadGameData(String a_fileName) throws IOException
     {
+        Vector<Vector<Character>> board = new Vector<Vector<Character>>();
 
+        int humanCaptured = 0, computerCaptured = 0, humanScore = 0, computerScore = 0, nextPlayerIndex = 0, pos = 0;
+        char humanColor = ' ', computerColor = ' ';
+
+        try
+        {
+            m_bufferedReader = new BufferedReader(new FileReader(a_fileName));
+
+            String line;
+
+            while ((line = m_bufferedReader.readLine()) != null) {
+                //First read in the board.
+                if (line.contains("Board:"))
+                {
+                    for (int i = 0; i < 19; i++)
+                    {
+                        line = m_bufferedReader.readLine();
+
+                        Vector<Character> row = new Vector<Character>();
+
+                        //Loop through the entire line to read in the row.
+                        for (int j = 0; j < line.length(); j++)
+                        {
+                            if (line.charAt(j) == 'O')
+                            {
+                                row.add('-');
+                            }
+                            else
+                            {
+                                row.add(line.charAt(j));
+                            }
+
+                        }
+
+                        board.add(row);
+                    }
+                }
+
+                //Next read in the human information
+                if (line.contains("Human:"))
+                {
+                    line = m_bufferedReader.readLine();
+
+                    //Obtaining the number of captures for the human player.
+                    pos = line.indexOf(":") + 2;
+                    humanCaptured = Integer.parseInt(line.substring(pos));
+
+                    //Obtaining the score for the human player.
+                    line = m_bufferedReader.readLine();
+                    pos = line.indexOf(":") + 2;
+                    humanScore = Integer.parseInt(line.substring(pos));
+                }
+
+                //Next read in the computer information
+                if (line.contains("Computer:"))
+                {
+                    line = m_bufferedReader.readLine();
+
+                    //Obtaining the number of captures for the human player.
+                    pos = line.indexOf(":") + 2;
+                    computerCaptured = Integer.parseInt(line.substring(pos));
+
+                    //Obtaining the score for the human player.
+                    line = m_bufferedReader.readLine();
+                    pos = line.indexOf(":") + 2;
+                    computerScore = Integer.parseInt(line.substring(pos));
+                }
+
+                //Last, read in the next player information.
+                if (line.contains("Next Player:"))
+                {
+                    if (line.contains("Human"))
+                    {
+                        //Human plays next
+                        nextPlayerIndex = 0;
+
+                        //Determine the colors of the players.
+                        if (line.contains("White"))
+                        {
+                            humanColor = 'W';
+                            computerColor = 'B';
+                        }
+                        else
+                        {
+                            humanColor = 'B';
+                            computerColor = 'W';
+                        }
+                    }
+                    else
+                    {
+                        //Computer plays next
+                        nextPlayerIndex = 1;
+
+                        //Determine the colors of the players.
+                        if (line.contains("White"))
+                        {
+                            computerColor = 'W';
+                            humanColor = 'B';
+                        }
+                        else
+                        {
+                            computerColor = 'B';
+                            humanColor = 'W';
+                        }
+                    }
+                }
+            }
+
+            m_bufferedReader.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        //Set the round's data to the variables read in.
+        if (!m_board.SetBoard(board))
+        {
+            System.out.println("Could not correctly load board from the file!");
+            return false;
+        }
+
+        if (!SetHumanCapturedPairs(humanCaptured) || !SetHumanScore(humanScore) || !SetHumanColor(humanColor))
+        {
+            System.out.println("Could not correctly load the human's information from the file!");
+            return false;
+        }
+
+        if (!SetComputerCapturedPairs(computerCaptured) || !SetComputerScore(computerScore) || !SetComputerColor(computerColor))
+        {
+            System.out.println("Could not correctly load the computer's information from the file!");
+            return false;
+        }
+
+        if (!SetNextPlayerIndex(nextPlayerIndex))
+        {
+            System.out.println("Could not correctly load the next player from the file!");
+            return false;
+        }
+
+        return true;
     }
 
     public void UpdateScores()
