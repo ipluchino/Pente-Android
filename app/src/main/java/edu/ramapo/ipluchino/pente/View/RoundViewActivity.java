@@ -210,22 +210,48 @@ public class RoundViewActivity extends AppCompatActivity {
             {
                 //The first player can be determined by their scores.
                 m_round.DetermineFirstPlayerViaScore();
+
+                //Announce who is going first in this case via an alert dialog.
+                AlertDialog.Builder builder = new AlertDialog.Builder(RoundViewActivity.this);
+                builder.setTitle("First Player");
+
+                String msg = "";
+                if (m_round.IsHumanTurn())
+                {
+                    msg = "You will be going first because you have a higher score than the computer.";
+                }
+                else
+                {
+                    msg = "The computer will be going first because they have a higher score than you.";
+                }
+
+                builder.setMessage(msg);
+
+                //OK button to clear the alert dialog.
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //No need to do anything here.
+                    }
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         }
         else
         {
-            //User must have started a new game, and the first player was determined in CoinTossActivity.
+            //User must have started a new game, and the first player was determined in CoinTossActivity OR a game was loaded.
         }
 
-        m_round.SetHumanScore(5);
-
-        //Initial Turn Display:
+        //Initial turn display.
         if (m_round.IsHumanTurn())
         {
+            //Display the Human components if it is the Human's turn.
             DisplayHumanComponents();
         }
         else
         {
+            //Display the Computer components if it is the Computer's turn.
             DisplayComputerComponents();
         }
 
