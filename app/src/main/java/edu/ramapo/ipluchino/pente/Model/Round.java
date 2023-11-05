@@ -81,6 +81,8 @@ public class Round implements Serializable {
         return m_playerList.get(1).GetCapturedPairs();
     }
 
+    public int GetNextPlayerIndex() { return m_nextPlayerIndex; }
+
     //Mutators
     public boolean SetNextPlayerIndex(int a_index)
     {
@@ -135,26 +137,17 @@ public class Round implements Serializable {
         SetNextPlayerIndex(1);
     }
 
-    //CONSIDER CHANGING VOID TO STRING?
-    public void DetermineFirstPlayer()
+    public void DetermineFirstPlayerViaScore()
     {
-        //The player who has the higher score gets to play first for the round.
-        //If the scores or tied, or a new tournament is started, the first player is determined via coin toss.
+        //The player who has the higher score gets to play first for the round if the scores are not tied.
         if (GetHumanScore() > GetComputerScore())
         {
             SetHumanFirst();
-            System.out.println("You will be going first since you have a higher score.");
         }
         else if (GetComputerScore() > GetHumanScore())
         {
             SetComputerFirst();
-            System.out.println("The computer will be going first because the computer has a higher score.");
         }
-        else
-        {
-            //REMOVE THIS PART??? FOR COIN TOSS --> COULD SEPARATELY CALL COINTOSS() IN VIEW CLASS...
-        }
-
     }
 
     public boolean CoinToss(String a_choice)
@@ -505,14 +498,14 @@ public class Round implements Serializable {
         SetNextPlayerIndex(-1);
     }
 
-    //CHANGE TO STRING SO IT CAN BE DISPLAYED TO SCREEN?
-    public void DisplayRoundScore()
+    public int ScoreHuman()
     {
-        int humanRoundScore = m_board.ScoreBoard(GetHumanColor(), GetHumanCapturedPairs());
-        int computerRoundScore = m_board.ScoreBoard(GetComputerColor(), GetComputerCapturedPairs());
+        return m_board.ScoreBoard(GetHumanColor(), GetHumanCapturedPairs());
+    }
 
-        System.out.println("Points scored by the Human this round: " + humanRoundScore);
-        System.out.println("Points scored by the Computer this round: " + computerRoundScore);
+    public int ScoreComputer()
+    {
+        return m_board.ScoreBoard(GetComputerColor(), GetComputerCapturedPairs());
     }
 
     public String PlayTurn(String a_location)
@@ -574,7 +567,7 @@ public class Round implements Serializable {
     {
         Round r = new Round();
         r.SetComputerScore(1);
-        r.DetermineFirstPlayer();
+        r.DetermineFirstPlayerViaScore();
 
         r.DisplayGame();
 

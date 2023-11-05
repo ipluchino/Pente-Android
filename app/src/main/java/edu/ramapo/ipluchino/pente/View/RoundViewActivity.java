@@ -36,9 +36,12 @@ public class RoundViewActivity extends AppCompatActivity {
     private Button m_saveAndExitButtonHuman;
     private Button m_placeStoneButtonComputer;
     private Button m_saveAndExitButtonComputer;
+    private Button m_playAgainButton;
+    private Button m_finishTournamentButton;
     private TextView m_nextTurnTextView;
     private TextView m_humanInformationTextView;
     private TextView m_computerInformationTextView;
+    private TextView m_scoringTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +59,12 @@ public class RoundViewActivity extends AppCompatActivity {
         m_saveAndExitButtonHuman = findViewById(R.id.saveAndExitButtonHuman);
         m_placeStoneButtonComputer = findViewById(R.id.placeStoneButtonComputer);
         m_saveAndExitButtonComputer = findViewById(R.id.saveAndExitButtonComputer);
+        m_playAgainButton = findViewById(R.id.playAgainButton);
+        m_finishTournamentButton = findViewById(R.id.finishTournamentButton);
         m_nextTurnTextView = findViewById(R.id.nextTurnTextView);
         m_humanInformationTextView = findViewById(R.id.humanInformationTextView);
         m_computerInformationTextView = findViewById(R.id.computerInformationTextView);
+        m_scoringTextView = findViewById(R.id.scoringTextView);
 
         //Initialize the board
         InitializeBoard();
@@ -179,6 +185,40 @@ public class RoundViewActivity extends AppCompatActivity {
             }
         });
 
+        m_playAgainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Restart this activity and pass the current round object to it so it can begin the next round.
+                m_intent = new Intent(getApplicationContext(), RoundViewActivity.class);
+                m_intent.putExtra("round", m_round);
+                startActivity(m_intent);
+            }
+        });
+
+        //Determine first player, if necessary.
+        if (m_round.GetNextPlayerIndex() == -1)
+        {
+            //A coin toss is necessary to determine the first player.
+            if (m_round.ScoresTied())
+            {
+                //Pass the current round object to the CoinTossActivity.
+                m_intent = new Intent(getApplicationContext(), CoinTossActivity.class);
+                m_intent.putExtra("round", m_round);
+                startActivity(m_intent);
+            }
+            else
+            {
+                //The first player can be determined by their scores.
+                m_round.DetermineFirstPlayerViaScore();
+            }
+        }
+        else
+        {
+            //User must have started a new game, and the first player was determined in CoinTossActivity.
+        }
+
+        m_round.SetHumanScore(5);
+
         //Initial Turn Display:
         if (m_round.IsHumanTurn())
         {
@@ -189,13 +229,15 @@ public class RoundViewActivity extends AppCompatActivity {
             DisplayComputerComponents();
         }
 
+        UpdateRoundInformation();
+
     }
 
     private void DisplayHumanComponents()
     {
         EnableLocationButtons();
 
-        m_nextTurnTextView.setText("Next turn - Human");
+        m_nextTurnTextView.setText("Next turn: Human - " + m_round.GetHumanColor());
 
         m_placeStoneButtonHuman.setVisibility(View.VISIBLE);
         m_getHelpButton.setVisibility(View.VISIBLE);
@@ -209,7 +251,7 @@ public class RoundViewActivity extends AppCompatActivity {
     {
         DisableLocationButtons();
 
-        m_nextTurnTextView.setText("Next turn - Computer");
+        m_nextTurnTextView.setText("Next turn: Computer - " + m_round.GetComputerColor());
 
         m_placeStoneButtonComputer.setVisibility(View.VISIBLE);
         m_saveAndExitButtonComputer.setVisibility(View.VISIBLE);
@@ -475,6 +517,25 @@ public class RoundViewActivity extends AppCompatActivity {
         m_saveAndExitButtonHuman.setVisibility(View.GONE);
         m_placeStoneButtonComputer.setVisibility(View.GONE);
         m_saveAndExitButtonComputer.setVisibility(View.GONE);
+
+        //Obtain the scores earned by each player for the current round.
+        String humanRoundScore = "Points scored by the Human this round: " + m_round.ScoreHuman() + "\n";
+        String computerRoundScore = "Points scored by the Computer this round: " + m_round.ScoreComputer() + "\n\n";
+
+        //Update the scores, and reset the round in preparation for another (if the user decides to keep playing).
+        m_round.UpdateScores();
+        m_round.ResetRound();
+
+        //Obtain the updated tournament scores for each player.
+        String updatedHumanTournamentScore = "Updated Human's tournament score: " + m_round.GetHumanScore() + "\n";
+        String updatedComputerTournamentScore = "Updated Computer's tournament score: " + m_round.GetComputerScore();
+
+        //Display the round and updated tournament scores of both players to the user.
+        m_scoringTextView.setText(humanRoundScore + computerRoundScore + updatedHumanTournamentScore + updatedComputerTournamentScore);
+
+        //Determine if the user wishes to keep playing by making the choice buttons visible.
+        m_playAgainButton.setVisibility(View.VISIBLE);
+        m_finishTournamentButton.setVisibility(View.VISIBLE);
     }
 
 }

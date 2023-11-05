@@ -12,7 +12,7 @@
         android:id="@+id/nextTurnTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:textSize="10pt"
         android:text="Next Turn: Human"
         android:textStyle="bold"
@@ -25,7 +25,7 @@
     <com.otaliastudios.zoom.ZoomLayout
         android:layout_width="382dp"
         android:layout_height="382dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="55dp"
         android:scrollbars=""
         app:alignment="center"
         app:animationDuration="280"
@@ -54,8 +54,8 @@
 
         <GridLayout
             android:id="@+id/buttonsGridLayout"
-            android:layout_width="381dp"
-            android:layout_height="381dp">
+            android:layout_width="382dp"
+            android:layout_height="382dp">
 
         </GridLayout>
 
@@ -131,7 +131,7 @@
         android:id="@+id/humanLabelTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="476dp"
+        android:layout_marginTop="445dp"
         android:text="Human"
         android:textColor="@color/black"
         android:textSize="7pt"
@@ -145,13 +145,13 @@
         android:id="@+id/computerLabelTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="476dp"
+        android:layout_marginTop="445dp"
         android:text="Computer"
-        android:textStyle="bold"
         android:textColor="@color/black"
         android:textSize="7pt"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.750"
+        app:layout_constraintHorizontal_bias="0.739"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -159,8 +159,8 @@
         android:id="@+id/humanInformationTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="500dp"
-        android:text="Tournament Score: 0\nCaptured Pairs: 0"
+        android:layout_marginTop="465dp"
+
         android:textColor="@color/black"
         android:textSize="7pt"
         app:layout_constraintEnd_toEndOf="parent"
@@ -172,8 +172,7 @@
         android:id="@+id/computerInformationTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="500dp"
-        android:text="Tournament Score: 0\nCaptured Pairs: 0"
+        android:layout_marginTop="465dp"
         android:textColor="@color/black"
         android:textSize="7pt"
         app:layout_constraintEnd_toEndOf="parent"
@@ -183,13 +182,42 @@
 
     <TextView
         android:id="@+id/scoringTextView"
-        android:layout_width="368dp"
-        android:layout_height="67dp"
-        android:layout_marginTop="556dp"
+        android:layout_width="364dp"
+        android:layout_height="105dp"
+        android:layout_marginTop="513dp"
+        android:gravity="center"
         android:textColor="@color/black"
         android:textSize="7pt"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/playAgainButton"
+        android:layout_width="177dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="628dp"
+        android:text="Play Another Round"
+        android:textColor="@color/black"
+        android:textSize="6pt"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.098"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/finishTournamentButton"
+        android:layout_width="177dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="628dp"
+        android:text="Finish Tournament"
+        android:textColor="@color/black"
+        android:textSize="6pt"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.931"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
