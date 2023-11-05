@@ -1,11 +1,14 @@
 package edu.ramapo.ipluchino.pente.View;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.ScaleGestureDetector;
@@ -15,10 +18,12 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.util.Vector;
 
 import edu.ramapo.ipluchino.pente.Model.Round;
@@ -26,6 +31,8 @@ import edu.ramapo.ipluchino.pente.Model.Round;
 import edu.ramapo.ipluchino.pente.R;
 
 public class RoundViewActivity extends AppCompatActivity {
+    private final int WRITE_PERMISSION = 200;
+
     private Intent m_intent;
     private Round m_round;
     private GridLayout m_buttonGridLayout;
@@ -195,7 +202,14 @@ public class RoundViewActivity extends AppCompatActivity {
             }
         });
 
-        //Determine first player, if necessary.
+        m_saveAndExitButtonHuman.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SaveTournament();
+            }
+        });
+
+        //Determine first player of the round, if necessary.
         if (m_round.GetNextPlayerIndex() == -1)
         {
             //A coin toss is necessary to determine the first player.
@@ -301,7 +315,7 @@ public class RoundViewActivity extends AppCompatActivity {
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 Button button = new Button(this);
 
-                //Set tags on the button so that their row and column can easily be identified.
+                //Set tags on the button so that their row and column can easily be identified as well as if their is a stone placed on it.
                 button.setTag(R.id.row, i);
                 button.setTag(R.id.column, j);
                 button.setTag(R.id.stonePlaced, false);
@@ -543,6 +557,7 @@ public class RoundViewActivity extends AppCompatActivity {
         m_saveAndExitButtonHuman.setVisibility(View.GONE);
         m_placeStoneButtonComputer.setVisibility(View.GONE);
         m_saveAndExitButtonComputer.setVisibility(View.GONE);
+        m_nextTurnTextView.setText("Next turn: Game over!");
 
         //Obtain the scores earned by each player for the current round.
         String humanRoundScore = "Points scored by the Human this round: " + m_round.ScoreHuman() + "\n";
@@ -562,6 +577,26 @@ public class RoundViewActivity extends AppCompatActivity {
         //Determine if the user wishes to keep playing by making the choice buttons visible.
         m_playAgainButton.setVisibility(View.VISIBLE);
         m_finishTournamentButton.setVisibility(View.VISIBLE);
+    }
+
+    private void SaveTournament()
+    {
+        //Request the permission to write to external storage, if the user has not already granted it.
+        if (ActivityCompat.checkSelfPermission(RoundViewActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(RoundViewActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, WRITE_PERMISSION);
+        }
+
+        //Get the location of the downloads folder.
+        String downloadFolder = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
+
+        //Ask the user for the file name to save the file to.
+
+        //Attempt to save the game to the file.
+        try {
+            m_round.SaveGame("testing.txt", downloadFolder);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

@@ -1,11 +1,13 @@
 package edu.ramapo.ipluchino.pente.Model;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.Random;
 import java.util.Vector;
-import java.io.FileReader;
 import java.io.FileWriter;
 
 public class Round implements Serializable {
@@ -24,10 +26,6 @@ public class Round implements Serializable {
 
     //The current player whose turn it is. Will be either 'H' for human or 'C' for computer.
     private int m_nextPlayerIndex;
-
-    //File reader/writers to read and write to a file.
-    private BufferedReader m_bufferedReader;
-    private FileWriter m_fileWriter;
 
     //Default Constructor
     public Round()
@@ -261,75 +259,76 @@ public class Round implements Serializable {
     }
 
     //https://www.w3schools.com/java/java_files_create.asp
-    public void SaveGame(String a_fileName) throws IOException
+    //https://stackoverflow.com/questions/15711098/trying-to-create-a-file-in-android-open-failed-erofs-read-only-file-system
+    public void SaveGame(String a_fileName, String downloadFolder) throws IOException
     {
+        String fullPath = downloadFolder + "/" + a_fileName;
+        File file = new File(fullPath);
+
         try
         {
-            m_fileWriter = new FileWriter(a_fileName);
+            FileWriter fileWriter = new FileWriter(file);
 
             //Write the board to the file.
             Vector<Vector<Character>> board = m_board.GetBoard();
 
-            m_fileWriter.write("Board:\n");
+            fileWriter.write("Board:\n");
             for (int row = 0; row < board.size(); row++)
             {
                 for (int col = 0; col < board.size(); col++)
                 {
                     if (board.get(row).get(col) == '-')
                     {
-                        m_fileWriter.write('O');
+                        fileWriter.write('O');
                     }
                     else
                     {
-                        m_fileWriter.write(board.get(row).get(col));
+                        fileWriter.write(board.get(row).get(col));
                     }
                 }
 
-                m_fileWriter.write("\n");
+                fileWriter.write("\n");
             }
 
             //Write the human's game information to the file.
-            m_fileWriter.write("\nHuman:\n");
-            m_fileWriter.write("Captured Pairs: " + GetHumanCapturedPairs() + "\n");
-            m_fileWriter.write("Score: " + GetHumanScore() + "\n\n");
+            fileWriter.write("\nHuman:\n");
+            fileWriter.write("Captured Pairs: " + GetHumanCapturedPairs() + "\n");
+            fileWriter.write("Score: " + GetHumanScore() + "\n\n");
 
             //Write the computer's game information to the file.
-            m_fileWriter.write("Computer:\n");
-            m_fileWriter.write("Captured Pairs: " + GetComputerCapturedPairs() + "\n");
-            m_fileWriter.write("Score: " + GetComputerScore() + "\n\n");
+            fileWriter.write("Computer:\n");
+            fileWriter.write("Captured Pairs: " + GetComputerCapturedPairs() + "\n");
+            fileWriter.write("Score: " + GetComputerScore() + "\n\n");
 
             //Write the next player's turn to the file.
-            m_fileWriter.write("Next Player: ");
+            fileWriter.write("Next Player: ");
             if (m_nextPlayerIndex == 0)
             {
-                m_fileWriter.write("Human - ");
+                fileWriter.write("Human - ");
                 if (GetHumanColor() == 'W')
                 {
-                    m_fileWriter.write("White");
+                    fileWriter.write("White");
                 }
                 else
                 {
-                    m_fileWriter.write("Black");
+                    fileWriter.write("Black");
                 }
 
             }
             else
             {
-                m_fileWriter.write("Computer - ");
+                fileWriter.write("Computer - ");
                 if (GetComputerColor() == 'W')
                 {
-                    m_fileWriter.write("White");
+                    fileWriter.write("White");
                 }
                 else
                 {
-                    m_fileWriter.write("Black");
+                    fileWriter.write("Black");
                 }
             }
 
-            m_fileWriter.close();
-
-            //EXIT APP??? GO TO WELCOME ACTIVITY???
-
+            fileWriter.close();
         }
         catch (IOException e)
         {
@@ -338,7 +337,7 @@ public class Round implements Serializable {
     }
 
     //https://www.baeldung.com/java-buffered-reader
-    public boolean LoadGameData(String a_fileName) throws IOException
+    public boolean LoadGameData(InputStream a_inputStream) throws IOException
     {
         Vector<Vector<Character>> board = new Vector<Vector<Character>>();
 
@@ -347,17 +346,18 @@ public class Round implements Serializable {
 
         try
         {
-            m_bufferedReader = new BufferedReader(new FileReader(a_fileName));
+            //File reader/writers to read and write to a file.
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(a_inputStream));
 
             String line;
 
-            while ((line = m_bufferedReader.readLine()) != null) {
+            while ((line = bufferedReader.readLine()) != null) {
                 //First read in the board.
                 if (line.contains("Board:"))
                 {
                     for (int i = 0; i < 19; i++)
                     {
-                        line = m_bufferedReader.readLine();
+                        line = bufferedReader.readLine();
 
                         Vector<Character> row = new Vector<Character>();
 
@@ -382,14 +382,14 @@ public class Round implements Serializable {
                 //Next read in the human information
                 if (line.contains("Human:"))
                 {
-                    line = m_bufferedReader.readLine();
+                    line = bufferedReader.readLine();
 
                     //Obtaining the number of captures for the human player.
                     pos = line.indexOf(":") + 2;
                     humanCaptured = Integer.parseInt(line.substring(pos));
 
                     //Obtaining the score for the human player.
-                    line = m_bufferedReader.readLine();
+                    line = bufferedReader.readLine();
                     pos = line.indexOf(":") + 2;
                     humanScore = Integer.parseInt(line.substring(pos));
                 }
@@ -397,14 +397,14 @@ public class Round implements Serializable {
                 //Next read in the computer information
                 if (line.contains("Computer:"))
                 {
-                    line = m_bufferedReader.readLine();
+                    line = bufferedReader.readLine();
 
                     //Obtaining the number of captures for the human player.
                     pos = line.indexOf(":") + 2;
                     computerCaptured = Integer.parseInt(line.substring(pos));
 
                     //Obtaining the score for the human player.
-                    line = m_bufferedReader.readLine();
+                    line = bufferedReader.readLine();
                     pos = line.indexOf(":") + 2;
                     computerScore = Integer.parseInt(line.substring(pos));
                 }
@@ -449,7 +449,7 @@ public class Round implements Serializable {
                 }
             }
 
-            m_bufferedReader.close();
+            bufferedReader.close();
         }
         catch (IOException e)
         {
