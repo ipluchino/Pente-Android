@@ -108,6 +108,7 @@ public class WelcomeActivity extends AppCompatActivity {
                         //Attach the loaded round to the intent and go to the RoundViewActivity.
                         Intent intent = new Intent(getApplicationContext(), RoundViewActivity.class);
                         intent.putExtra("round", loadedRound);
+                        intent.putExtra("loadedFromFile", true);
                         startActivity(intent);
                     }
 

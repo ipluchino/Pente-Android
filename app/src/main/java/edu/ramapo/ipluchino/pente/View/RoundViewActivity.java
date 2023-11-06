@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,10 +48,13 @@ public class RoundViewActivity extends AppCompatActivity {
     private Button m_saveAndExitButtonComputer;
     private Button m_playAgainButton;
     private Button m_finishTournamentButton;
+    private Button m_logButton;
     private TextView m_nextTurnTextView;
     private TextView m_humanInformationTextView;
     private TextView m_computerInformationTextView;
     private TextView m_scoringTextView;
+    private Vector<String> m_logData;
+    private int m_logCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +74,12 @@ public class RoundViewActivity extends AppCompatActivity {
         m_saveAndExitButtonComputer = findViewById(R.id.saveAndExitButtonComputer);
         m_playAgainButton = findViewById(R.id.playAgainButton);
         m_finishTournamentButton = findViewById(R.id.finishTournamentButton);
+        m_logButton = findViewById(R.id.logButton);
         m_nextTurnTextView = findViewById(R.id.nextTurnTextView);
         m_humanInformationTextView = findViewById(R.id.humanInformationTextView);
         m_computerInformationTextView = findViewById(R.id.computerInformationTextView);
         m_scoringTextView = findViewById(R.id.scoringTextView);
+        m_logData = new Vector<String>();
 
         //Initialize the board
         InitializeBoard();
@@ -121,14 +127,16 @@ public class RoundViewActivity extends AppCompatActivity {
                     String boardRow = GetHighlightedButtonRow();
                     String boardColumn = GetHighlightedButtonColumn();
                     String location = boardColumn + boardRow;
-
-                    String move = m_round.PlayTurn(location);
-                    Log.d("myTag", move);
-
                     m_highlightedButton = null;
 
+                    String move = m_round.PlayTurn(location);
+
+                    //Add the move to the log and update the display.
+                    m_logCounter++;
+                    m_logData.add(Integer.toString(m_logCounter) + ". " + move);
                     UpdateRoundInformation();
 
+                    //Continue alternating turns until the round is over.
                     if (!m_round.RoundOver().equals(""))
                     {
                         RoundCompleted();
@@ -146,10 +154,13 @@ public class RoundViewActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Note: parameter is an empty string because the computer will automatically choose its optimal play location.
                 String move = m_round.PlayTurn("");
-                Log.d("myTag", move);
 
+                //Add the move to the log and update the display.
+                m_logCounter++;
+                m_logData.add(Integer.toString(m_logCounter) + ". " + move);
                 UpdateRoundInformation();
 
+                //Continue alternating turns until the round is over.
                 if (!m_round.RoundOver().equals(""))
                 {
                     RoundCompleted();
@@ -218,6 +229,52 @@ public class RoundViewActivity extends AppCompatActivity {
             }
         });
 
+        m_finishTournamentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                m_intent = new Intent(getApplicationContext(), TournamentOverActivity.class);
+                startActivity(m_intent);
+            }
+        });
+
+        //https://stackoverflow.com/questions/50083803/how-to-make-a-alertdialog-list-scrollable-android
+        //https://stackoverflow.com/questions/51703725/scroll-view-not-working-in-alert-dialog
+        m_logButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Dynamically create a scrollView that will hold all the logs. This ensures it will be scrollable (since there will be many log entries).
+                ScrollView scrollView = new ScrollView(getApplicationContext());
+                TextView textView = new TextView(getApplicationContext());
+
+                //Put each entry in the log vector into a single string so that it can be displayed.
+                String allLogs = "";
+                for (String entry : m_logData)
+                {
+                    allLogs += entry + "\n\n";
+                }
+
+                textView.setText(allLogs);
+                scrollView.addView(textView);
+
+                //Create the alert dialog.
+                AlertDialog.Builder builder = new AlertDialog.Builder(RoundViewActivity.this);
+                builder.setTitle("Logs");
+
+                //Attach the ScrollView containing all of the logs to the alert dialog.
+                builder.setView(scrollView);
+
+                //OK button to clear the alert dialog.
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //No need to do anything here.
+                    }
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
+
         //Determine first player of the round, if necessary.
         if (m_round.GetNextPlayerIndex() == -1)
         {
@@ -242,10 +299,18 @@ public class RoundViewActivity extends AppCompatActivity {
                 if (m_round.IsHumanTurn())
                 {
                     msg = "You will be going first because you have a higher score than the computer.";
+
+                    //Add who went first to the logs.
+                    m_logCounter++;
+                    m_logData.add(Integer.toString(m_logCounter) + ". FIRST PLAYER: The human player will go first because they have a higher score.");
                 }
                 else
                 {
                     msg = "The computer will be going first because they have a higher score than you.";
+
+                    //Add who went first to the logs.
+                    m_logCounter++;
+                    m_logData.add(Integer.toString(m_logCounter) + ". FIRST PLAYER: The computer player will go first because they have a higher score.");
                 }
 
                 builder.setMessage(msg);
@@ -264,6 +329,32 @@ public class RoundViewActivity extends AppCompatActivity {
         else
         {
             //User must have started a new game, and the first player was determined in CoinTossActivity OR a game was loaded.
+            //For logging purposes, log if the game was loaded from a file or who won the coin toss.
+            boolean loadedFromFile = m_intent.getBooleanExtra("loadedFromFile", false);
+
+            if (loadedFromFile)
+            {
+                //The tournament was loaded from a file.
+                m_logCounter++;
+                m_logData.add(Integer.toString(m_logCounter) + ". The tournament was loaded from a file.");
+            }
+            else
+            {
+                if (m_round.IsHumanTurn())
+                {
+                    //The user won the coin toss.
+                    m_logCounter++;
+                    m_logData.add(Integer.toString(m_logCounter) + ". FIRST PLAYER: The human player will go first because they won the coin toss.");
+                }
+                else
+                {
+                    //The user lost the coin toss.
+                    m_logCounter++;
+                    m_logData.add(Integer.toString(m_logCounter) + ". FIRST PLAYER: The computer player will go first because the human lost the coin toss.");
+                }
+            }
+
+
         }
 
         //Initial turn display.
@@ -279,7 +370,6 @@ public class RoundViewActivity extends AppCompatActivity {
         }
 
         UpdateRoundInformation();
-
     }
 
     private void DisplayHumanComponents()
@@ -629,6 +719,10 @@ public class RoundViewActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
+
+                    //Go back to the main welcome screen after a file is saved.
+                    m_intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+                    startActivity(m_intent);
                 }
             }
         });

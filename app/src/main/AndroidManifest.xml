@@ -42,6 +42,13 @@
             android:exported="true"
             android:theme="@style/Theme.Pente">
         </activity>
+
+        <activity
+            android:name=".View.TournamentOverActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Pente">
+        </activity>
+
     </application>
 
 </manifest>

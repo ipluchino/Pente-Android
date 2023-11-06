@@ -62,6 +62,19 @@
     </com.otaliastudios.zoom.ZoomLayout>
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/logButton"
+        android:layout_width="80dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="12dp"
+        android:text="Log"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.927"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/placeStoneButtonHuman"
         android:layout_width="100dp"
         android:layout_height="80dp"
@@ -103,7 +116,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/placeStoneButtonComputer"
         android:layout_width="170dp"
-        android:layout_height="70dp"
+        android:layout_height="80dp"
         android:layout_marginTop="515dp"
         android:text="Let Computer Place Stone"
         android:textColor="@color/black"
@@ -116,7 +129,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/saveAndExitButtonComputer"
         android:layout_width="170dp"
-        android:layout_height="70dp"
+        android:layout_height="80dp"
         android:layout_marginTop="515dp"
         android:text="Save &amp; Exit"
         android:textColor="@color/black"
