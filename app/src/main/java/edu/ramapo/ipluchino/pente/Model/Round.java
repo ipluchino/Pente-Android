@@ -260,10 +260,9 @@ public class Round implements Serializable {
 
     //https://www.w3schools.com/java/java_files_create.asp
     //https://stackoverflow.com/questions/15711098/trying-to-create-a-file-in-android-open-failed-erofs-read-only-file-system
-    public void SaveGame(String a_fileName, String downloadFolder) throws IOException
+    public void SaveGame(String a_fileName) throws IOException
     {
-        String fullPath = downloadFolder + "/" + a_fileName;
-        File file = new File(fullPath);
+        File file = new File(a_fileName);
 
         try
         {
@@ -559,10 +558,6 @@ public class Round implements Serializable {
         return m_nextPlayerIndex == 0;
     }
 
-
-
-
-
     public static void main(String[] args)
     {
         Round r = new Round();
@@ -570,7 +565,6 @@ public class Round implements Serializable {
         r.DetermineFirstPlayerViaScore();
 
         r.DisplayGame();
-
     }
 }
 

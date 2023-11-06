@@ -9,11 +9,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
@@ -192,6 +194,20 @@ public class RoundViewActivity extends AppCompatActivity {
             }
         });
 
+        m_saveAndExitButtonHuman.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SaveTournament();
+            }
+        });
+
+        m_saveAndExitButtonComputer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SaveTournament();
+            }
+        });
+
         m_playAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -199,13 +215,6 @@ public class RoundViewActivity extends AppCompatActivity {
                 m_intent = new Intent(getApplicationContext(), RoundViewActivity.class);
                 m_intent.putExtra("round", m_round);
                 startActivity(m_intent);
-            }
-        });
-
-        m_saveAndExitButtonHuman.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SaveTournament();
             }
         });
 
@@ -579,24 +588,93 @@ public class RoundViewActivity extends AppCompatActivity {
         m_finishTournamentButton.setVisibility(View.VISIBLE);
     }
 
+    //https://stackoverflow.com/questions/10903754/input-text-dialog-android
     private void SaveTournament()
     {
         //Request the permission to write to external storage, if the user has not already granted it.
-        if (ActivityCompat.checkSelfPermission(RoundViewActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(RoundViewActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, WRITE_PERMISSION);
+        if (ActivityCompat.checkSelfPermission(RoundViewActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(RoundViewActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION);
         }
-
-        //Get the location of the downloads folder.
-        String downloadFolder = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
 
         //Ask the user for the file name to save the file to.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Save Tournament");
+        builder.setMessage("Choose a file name to save the tournament to (without the .txt). The file will be saved to the downloads folder.");
 
-        //Attempt to save the game to the file.
-        try {
-            m_round.SaveGame("testing.txt", downloadFolder);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        //Create an "EditText" object to store the input from the user.
+        final EditText input = new EditText(this);
+        builder.setView(input);
+
+        //Confirm button.
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Get the location of the downloads folder.
+                String downloadFolder = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
+
+                //Get the full path to the file that the user would like to save the tournament to.
+                String userInput = input.getText().toString();
+                String fileName = downloadFolder + "/" + userInput + ".txt";
+
+                //If the user entered an invalid character, let them know.
+                if (InvalidFileName(userInput))
+                {
+                    DisplayInvalidFileName();
+                }
+                else
+                {
+                    //If the file name is valid, save the tournament.
+                    try {
+                        m_round.SaveGame(fileName);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+
+        //Cancel button - user does not wish to save the tournament anymore.
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //No need to do anything here.
+            }
+        });
+
+        builder.show();
+    }
+
+    private boolean InvalidFileName(String a_fileName)
+    {
+        String[] invalidCharacters = {"\\", "/", "?", "<", ">", ":", ";", "|", "\""};
+
+        for (String invalid :invalidCharacters)
+        {
+            if (a_fileName.contains(invalid))
+            {
+                return true;
+            }
         }
+
+        return false;
+    }
+
+    private void DisplayInvalidFileName()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(RoundViewActivity.this);
+        builder.setTitle("Invalid file name!");
+
+        builder.setMessage("The file name you provided is invalid! Please try again.");
+
+        //OK button to clear the alert dialog.
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //No need to do anything here.
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
 }
