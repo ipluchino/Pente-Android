@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="436dp"
         android:textColor="@color/black"
-        android:textSize="35sp"
+        android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,6 +78,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/sadface" />
+
+    <ImageView
+        android:id="@+id/shrugImageView"
+        android:layout_width="237dp"
+        android:layout_height="237dp"
+        android:layout_marginTop="180dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.545"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/shrug" />
 
 
 

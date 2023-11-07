@@ -32,6 +32,7 @@ public class TournamentOverActivity extends AppCompatActivity {
     private TextView m_scoresTextView;
     private ImageView m_thumbsUp;
     private ImageView m_sadFace;
+    private ImageView m_shrug;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class TournamentOverActivity extends AppCompatActivity {
         m_scoresTextView = findViewById(R.id.scoreResultsTextView);
         m_thumbsUp = findViewById(R.id.thumbsUpImageView);
         m_sadFace = findViewById(R.id.sadFaceImageView);
+        m_shrug = findViewById(R.id.shrugImageView);
 
         //Set onClick listeners.
         m_homeButton.setOnClickListener(new View.OnClickListener() {
@@ -64,9 +66,13 @@ public class TournamentOverActivity extends AppCompatActivity {
             DisplayHumanWon();
         }
         //The computer player won the tournament.
-        else
+        else if (m_computerScore > m_humanScore)
         {
             DisplayComputerWon();
+        }
+        else
+        {
+            DisplayDraw();
         }
 
         DisplayFinalScores();
@@ -84,6 +90,13 @@ public class TournamentOverActivity extends AppCompatActivity {
         //Edit the display to show that the computer player won the tournament.
         m_sadFace.setVisibility(View.VISIBLE);
         m_winnerTextView.setText("Winner: Computer");
+    }
+
+    private void DisplayDraw()
+    {
+        //Edit the display to show that a draw occurred.
+        m_shrug.setVisibility(View.VISIBLE);
+        m_winnerTextView.setText("Winner: Draw");
     }
 
     private void DisplayFinalScores()
