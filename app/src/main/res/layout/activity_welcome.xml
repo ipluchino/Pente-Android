@@ -8,7 +8,7 @@
     android:background="#43D1C5">
 
     <TextView
-        android:id="@+id/textViewWelcome"
+        android:id="@+id/welcomeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -30,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewWelcome" />
+        app:layout_constraintTop_toBottomOf="@id/welcomeTextView" />
 
     <Button
         android:id="@+id/loadGameButton"
@@ -45,13 +45,13 @@
         app:layout_constraintTop_toBottomOf="@id/newGameButton" />
 
     <ImageView
-        android:id="@+id/imageViewLogo"
+        android:id="@+id/logoImageView"
         android:layout_width="375dp"
         android:layout_height="357dp"
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewWelcome"
+        app:layout_constraintTop_toBottomOf="@id/welcomeTextView"
         app:srcCompat="@drawable/pente" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

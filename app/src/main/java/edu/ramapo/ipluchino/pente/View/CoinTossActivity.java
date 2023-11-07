@@ -53,10 +53,10 @@ public class CoinTossActivity extends AppCompatActivity {
         m_headsImage = findViewById(R.id.imageViewHeads);
         m_tailsImage = findViewById(R.id.imageViewTails);
         m_coinTossImage = findViewById(R.id.imageViewCoinToss);
-        m_titleTextView = findViewById(R.id.textViewCoinToss);
+        m_titleTextView = findViewById(R.id.coinTossTextView);
         m_resultTextView = findViewById(R.id.textViewResult);
-        m_wonTextView = findViewById(R.id.textViewWon);
-        m_lostTextView = findViewById(R.id.textViewLost);
+        m_wonTextView = findViewById(R.id.wonTextView);
+        m_lostTextView = findViewById(R.id.lostTextView);
 
         //Set onClick listeners.
         m_headsButton.setOnClickListener(new View.OnClickListener() {

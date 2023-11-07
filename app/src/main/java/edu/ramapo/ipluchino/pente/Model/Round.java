@@ -458,25 +458,21 @@ public class Round implements Serializable {
         //Set the round's data to the variables read in.
         if (!m_board.SetBoard(board))
         {
-            System.out.println("Could not correctly load board from the file!");
             return false;
         }
 
         if (!SetHumanCapturedPairs(humanCaptured) || !SetHumanScore(humanScore) || !SetHumanColor(humanColor))
         {
-            System.out.println("Could not correctly load the human's information from the file!");
             return false;
         }
 
         if (!SetComputerCapturedPairs(computerCaptured) || !SetComputerScore(computerScore) || !SetComputerColor(computerColor))
         {
-            System.out.println("Could not correctly load the computer's information from the file!");
             return false;
         }
 
         if (!SetNextPlayerIndex(nextPlayerIndex))
         {
-            System.out.println("Could not correctly load the next player from the file!");
             return false;
         }
 

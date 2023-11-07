@@ -591,8 +591,10 @@ public class Player implements Serializable {
         {
             //If there are multiple win moves, see if the win can be delayed to earn additional points.
             //The win will only be delayed if the player is not in danger of getting captured and giving more points to the opponent.
+            //The player must also not be at risk of losing on the following turn.
             Vector<Integer> opponentCaptures = PreventCapture(a_board, a_color);
-            if (opponentCaptures.isEmpty())
+            Vector<Integer> opponentWin = PreventWinningMove(a_board, a_color);
+            if (opponentCaptures.isEmpty() && opponentWin.isEmpty())
             {
                 //Check if any captures can be made to score additional points.
                 Vector<Integer> potentialCaptures = MakeCapture(a_board, a_color);

@@ -2,6 +2,8 @@ package edu.ramapo.ipluchino.pente.View;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -78,7 +80,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     //https://stackoverflow.com/questions/2975197/convert-file-uri-to-file-in-android
@@ -103,13 +104,20 @@ public class WelcomeActivity extends AppCompatActivity {
                     if (inputStream != null)
                     {
                         //If the file could be opened as an input stream, load the data into the round object.
-                        loadedRound.LoadGameData(inputStream);
+                        boolean success = loadedRound.LoadGameData(inputStream);
 
-                        //Attach the loaded round to the intent and go to the RoundViewActivity.
-                        Intent intent = new Intent(getApplicationContext(), RoundViewActivity.class);
-                        intent.putExtra("round", loadedRound);
-                        intent.putExtra("loadedFromFile", true);
-                        startActivity(intent);
+                        if (success)
+                        {
+                            //Attach the loaded round to the intent and go to the RoundViewActivity.
+                            Intent intent = new Intent(getApplicationContext(), RoundViewActivity.class);
+                            intent.putExtra("round", loadedRound);
+                            intent.putExtra("loadedFromFile", true);
+                            startActivity(intent);
+                        }
+                        else
+                        {
+                            DisplayInvalidFile();
+                        }
                     }
 
                 } catch (FileNotFoundException e) {
@@ -120,5 +128,24 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void DisplayInvalidFile()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(WelcomeActivity.this);
+        builder.setTitle("Invalid file!");
+
+        builder.setMessage("The file you selected to load is considered invalid. Please ensure the file is in the correct format and try again.");
+
+        //OK button to clear the alert dialog.
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //No need to do anything here.
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
 
 }

@@ -232,13 +232,17 @@ public class RoundViewActivity extends AppCompatActivity {
         m_finishTournamentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //If the user is done playing the tournament, pass the scores of each player to the TournamentOverActivity so the winner can be displayed.
                 m_intent = new Intent(getApplicationContext(), TournamentOverActivity.class);
+                m_intent.putExtra("humanScore", m_round.GetHumanScore());
+                m_intent.putExtra("computerScore", m_round.GetComputerScore());
                 startActivity(m_intent);
             }
         });
 
         //https://stackoverflow.com/questions/50083803/how-to-make-a-alertdialog-list-scrollable-android
         //https://stackoverflow.com/questions/51703725/scroll-view-not-working-in-alert-dialog
+        //https://stackoverflow.com/questions/14834685/android-alertdialog-setview-rules
         m_logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

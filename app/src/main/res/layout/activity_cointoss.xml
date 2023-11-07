@@ -8,7 +8,7 @@
     android:background="#43D1C5">
 
     <TextView
-        android:id="@+id/textViewCoinToss"
+        android:id="@+id/coinTossTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textViewWon"
+        android:id="@+id/wonTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -35,7 +35,7 @@
         android:visibility="invisible" />
 
     <TextView
-        android:id="@+id/textViewLost"
+        android:id="@+id/lostTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -58,7 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewCoinToss" />
+        app:layout_constraintTop_toBottomOf="@id/coinTossTextView" />
 
     <Button
         android:id="@+id/tailsButton"
@@ -80,7 +80,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewCoinToss"
+        app:layout_constraintTop_toBottomOf="@id/coinTossTextView"
         app:srcCompat="@drawable/cointoss" />
 
     <ImageView
@@ -91,7 +91,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewCoinToss"
+        app:layout_constraintTop_toBottomOf="@id/coinTossTextView"
         app:srcCompat="@drawable/heads"
         android:visibility="invisible"/>
 
@@ -103,7 +103,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewCoinToss"
+        app:layout_constraintTop_toBottomOf="@id/coinTossTextView"
         app:srcCompat="@drawable/tails"
         android:visibility="invisible"/>
 
