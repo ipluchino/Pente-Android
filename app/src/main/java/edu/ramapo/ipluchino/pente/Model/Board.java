@@ -8,7 +8,9 @@ public class Board implements Serializable {
     // Holds all the data for the entire board.
     private Vector<Vector<Character>> m_board;
 
-    // Default Constructor
+    /**
+     Default constructor of the Board class.
+     */
     public Board()
     {
         m_board = new Vector<Vector<Character>>(StrategyConstants.BOARD_SIZE);
@@ -25,13 +27,18 @@ public class Board implements Serializable {
         }
     }
 
-    // Copy Constructor
+    /**
+     Copy constructor of the Board class.
+     */
     public Board(Board a_otherBoard)
     {
         m_board = a_otherBoard.GetBoard();
     }
 
-    // Selectors
+    /**
+     Gets a copy of the vector that holds all of the board data.
+     @return The 2-D vector representing the current board.
+     */
     public Vector<Vector<Character>> GetBoard() {
         //Return a copy of the board, not a reference to it.
         Vector<Vector<Character>> copy = new Vector<>();
@@ -50,7 +57,11 @@ public class Board implements Serializable {
         return copy;
     }
 
-    // Mutators
+    /**
+     Sets the board vector of the Board class.
+     @param a_board A 2-D vector of characters representing a Pente board.
+     @return A boolean, whether or not the board was successfully set.
+     */
     public boolean SetBoard(Vector<Vector<Character>> a_board)
     {
         //The board must be 19x19 to be considered valid.
@@ -78,7 +89,14 @@ public class Board implements Serializable {
         return true;
     }
 
-    public boolean PlaceStone(char a_column, int a_row, char a_pieceColor)
+    /**
+     Places a stone on the board.
+     @param a_column A character, representing the column of the board to place on.
+     @param a_row An integer, representing the row of the board to place on.
+     @param a_stoneColor A character, representing the stone color that is being placed on the board.
+     @return A boolean, whether or not the stone was successfully placed on the board.
+     */
+    public boolean PlaceStone(char a_column, int a_row, char a_stoneColor)
     {
         if (a_column < 'A' || a_column > 'S') return false;
 
@@ -92,12 +110,18 @@ public class Board implements Serializable {
 
 
         //Place the piece on the board.
-        m_board.get(a_row).set(numericColumn, a_pieceColor);
+        m_board.get(a_row).set(numericColumn, a_stoneColor);
 
         return true;
 
     }
 
+    /**
+     Removes a stone from the board.
+     @param a_column A character, representing the column of the stone that is being removed.
+     @param a_row An integer, representing the row of the stone that is being removed.
+     @return A boolean, whether or not the stone was successfully placed on the board.
+     */
     public boolean RemoveStone(char a_column, int a_row)
     {
         if (a_column < 'A' || a_column > 'S') return false;
@@ -115,7 +139,9 @@ public class Board implements Serializable {
         return true;
     }
 
-    // Utility Functions
+    /**
+     Displays the board textually on to the screen.
+     */
     public void DisplayBoard()
     {
         //Print the column headers at the top of the board (A-S going from left to right)
@@ -143,16 +169,33 @@ public class Board implements Serializable {
         System.out.print("\n");
     }
 
+    /**
+     Checks if a row and column pair are valid within board constraints.
+     @param a_column An integer, representing the column to be checked.
+     @param a_row An integer, representing the row to be checked.
+     @return A boolean, whether or not the row and column pair provided are valid within board constraints.
+     */
     public boolean IsValidIndices(int a_row, int a_column)
     {
         return (a_row >= 0 && a_row <= 18) && (a_column >= 0 && a_column <= 18);
     }
 
+    /**
+     Checks if a provided location is empty on the board.
+     @param a_column An integer, representing the column of the location to be checked.
+     @param a_row An integer, representing the row of the location to be checked.
+     @return A boolean, whether or not the location defined by the row and column is empty on the board.
+     */
     public boolean IsEmptyLocation(char a_column, int a_row)
     {
         return m_board.get(ConvertRowIndex(a_row)).get(CharacterToInt(a_column)) == '-';
     }
 
+    /**
+     Counts the number of stones placed on the board of a provided color.
+     @param a_color A character, representing the color of stones to be counted.
+     @return An integer, representing the total number of stones of that color on the board.
+     */
     public int CountPieces(char a_color)
     {
         int total = 0;
@@ -172,11 +215,22 @@ public class Board implements Serializable {
         return total;
     }
 
+    /**
+     Determines if the entire board is empty.
+     @return A boolean, whether or not the board is completely empty.
+     */
     public boolean IsEmptyBoard()
     {
         return CountPieces('W') == 0 && CountPieces('B') == 0;
     }
 
+    /**
+     To clear captures off of the board, if any occur.
+     @param a_column A character, representing the column of the location a stone was just placed.
+     @param a_row An integer, representing the row of the location a stone was just placed.
+     @param a_color A character, representing the color of the stone just placed.
+     @return An integer, representing the total number of captures that were removed off the board.
+     */
     public int ClearCaptures(char a_column, int a_row, char a_color)
     {
         //Represents the total number of pairs captured after placing a stone at this current location.
@@ -226,6 +280,11 @@ public class Board implements Serializable {
         return numCaptures;
     }
 
+    /**
+     Determines the opponent's stone color.
+     @param a_color A character, representing the current player's stone color.
+     @return A character, representing the stone color of the opponent.
+     */
     public char OpponentColor(char a_color) {
         if (a_color == 'W')
         {
@@ -237,6 +296,10 @@ public class Board implements Serializable {
         }
     }
 
+    /**
+     Determines if the board is completely full.
+     @return A boolean, whether or not the board is completely full and there are no more empty locations.
+     */
     public boolean IsBoardFull()
     {
         //Loop through every piece on the board, and if one is empty the board is not full. Otherwise, it is.
@@ -251,6 +314,11 @@ public class Board implements Serializable {
         return true;
     }
 
+    /**
+     Determines if five consecutive stones has been achieved on the board for a provided stone color.
+     @param a_color A character, representing the color of stone that is being checked.
+     @return A boolean, whether or not five consecutive stones has been achieved on the board for the provided stone color.
+     */
     public boolean FiveConsecutive(char a_color)
     {
         //From every position on the board, every horizontal, vertical, and diagonal needs to be searched.
@@ -284,6 +352,12 @@ public class Board implements Serializable {
         return false;
     }
 
+    /**
+     Scores the board given a player's stone color and number of captured pairs they have.
+     @param a_color A character, representing the color of the player that is being scored.
+     @param a_numCaptures An integer representing the number of captured pairs that player has.
+     @return An integer, representing the score earned by that player.
+     */
     public int ScoreBoard(char a_color, int a_numCaptures)
     {
         //Holds the overall score for a provided color (a_color).
@@ -362,6 +436,9 @@ public class Board implements Serializable {
         return totalScore;
     }
 
+    /**
+     Clears the board, making it completely empty.
+     */
     public void ClearBoard()
     {
         //Clear the board.
@@ -379,22 +456,40 @@ public class Board implements Serializable {
         }
     }
 
-    // Conversion Functions
+    /**
+     Converts an alphabetical column into its numerical counterpart.
+     @param a_column A character representing the column to be converted.
+     @return An integer, representing the converted column.
+     */
     public int CharacterToInt(char a_column)
     {
         return (int) (a_column - 'A');
     }
 
+    /**
+     Converts a numerical column into its alphabetical counterpart.
+     @param a_column An integer representing the column to be converted.
+     @return A character, representing the converted column.
+     */
     public char IntToCharacter(int a_column)
     {
         return (char) (a_column + 'A');
     }
 
+    /**
+     Converts a row from its vector index to board view index or vice versa.
+     @param a_row An integer, representing the row to be converted.
+     @return An integer, representing the row's converted index.
+     */
     public int ConvertRowIndex(int a_row)
     {
         return 19 - a_row;
     }
 
+    /**
+     The main function of the Board class - used for testing purposes.
+     @param args An array of strings, representing command line arguments.
+     */
     public static void main(String[] args)
     {
         Vector<Vector<Character>> testBoard = new Vector<Vector<Character>>() {
