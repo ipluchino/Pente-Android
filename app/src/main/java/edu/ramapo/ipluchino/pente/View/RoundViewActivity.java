@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 
@@ -703,12 +704,19 @@ public class RoundViewActivity extends AppCompatActivity {
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Get the location of the downloads folder.
-                String downloadFolder = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
+                File saveLocation = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Pente");
+
+                //Create the directory if it does not exist already exist.
+                if (!saveLocation.exists()) {
+                    saveLocation.mkdir();
+                }
+
+                //Get the location of the Pente folder inside the Documents folder.
+                String penteFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Pente";
 
                 //Get the full path to the file that the user would like to save the tournament to.
                 String userInput = input.getText().toString();
-                String fileName = downloadFolder + "/" + userInput + ".txt";
+                String fileName = penteFolder + "/" + userInput + ".txt";
 
                 //If the user entered an invalid character, let them know.
                 if (InvalidFileName(userInput))

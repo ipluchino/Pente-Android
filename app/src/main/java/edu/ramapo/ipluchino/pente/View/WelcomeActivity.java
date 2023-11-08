@@ -9,9 +9,12 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,9 +22,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Vector;
 
 import edu.ramapo.ipluchino.pente.Model.Round;
 import edu.ramapo.ipluchino.pente.R;
@@ -60,75 +65,41 @@ public class WelcomeActivity extends AppCompatActivity {
         });
 
         //https://stackoverflow.com/questions/20063957/read-file-in-android-file-permission-denied
-        //https://stackoverflow.com/questions/30789116/implementing-a-file-picker-in-android-and-copying-the-selected-file-to-another-l
-        //https://developer.android.com/training/data-storage/shared/documents-files
-        //https://developer.android.com/training/permissions/requesting#java
         //https://www.geeksforgeeks.org/android-how-to-request-permissions-in-android-application/#
+        //https://stackoverflow.com/questions/5527764/get-application-directory
+        //https://stackoverflow.com/questions/36496323/i-want-to-create-a-new-directory-in-dynamic-way-in-my-storage
         m_loadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("myTag", "Load Game was clicked");
-
                 //Request the permission to read external storage, if the user has not already granted it.
                 if (ActivityCompat.checkSelfPermission(WelcomeActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(WelcomeActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_PERMISSION);
                 }
 
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("text/plain");
-                startActivityForResult(intent, PICK_TEXT_FILE);
+                File saveLocation = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Pente");
 
+                //Create the directory if it does not exist already exist.
+                if (!saveLocation.exists()) {
+                    saveLocation.mkdir();
+                }
+
+                //Obtain all of the files in the directory.
+                File[] fileList = saveLocation.listFiles();
+
+                //Add all of the file name in the directory into a vector.
+                Vector<String> fileNames = new Vector<String>();
+                for (File file : fileList)
+                {
+                    fileNames.add(file.getName());
+                }
+
+                //Display all of the saved files and let the user choose which file they want to load from.
+                DisplaySavedFiles(fileNames);
             }
         });
     }
 
-    //https://stackoverflow.com/questions/2975197/convert-file-uri-to-file-in-android
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        super.onActivityResult(requestCode, resultCode, resultData);
-
-        if (requestCode == PICK_TEXT_FILE && resultCode == Activity.RESULT_OK)
-        {
-            Uri uri;
-
-            if (resultData != null)
-            {
-                //Obtain the uri of the file that was chosen by the user.
-                uri = resultData.getData();
-                Round loadedRound = new Round();
-
-                try {
-                    //Attempt to open an input stream for the file.
-                    InputStream inputStream = getContentResolver().openInputStream(uri);
-
-                    if (inputStream != null)
-                    {
-                        //If the file could be opened as an input stream, load the data into the round object.
-                        boolean success = loadedRound.LoadGameData(inputStream);
-
-                        if (success)
-                        {
-                            //Attach the loaded round to the intent and go to the RoundViewActivity.
-                            Intent intent = new Intent(getApplicationContext(), RoundViewActivity.class);
-                            intent.putExtra("round", loadedRound);
-                            intent.putExtra("loadedFromFile", true);
-                            startActivity(intent);
-                        }
-                        else
-                        {
-                            DisplayInvalidFile();
-                        }
-                    }
-
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-    }
-
+    //https://stackoverflow.com/questions/9157887/android-how-to-use-spinner-in-an-alertdialog
     private void DisplayInvalidFile()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(WelcomeActivity.this);
@@ -147,5 +118,68 @@ public class WelcomeActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    //https://stackoverflow.com/questions/9157887/android-how-to-use-spinner-in-an-alertdialog
+    private void DisplaySavedFiles(Vector<String> a_files)
+    {
+        ArrayAdapter<String> fileListAdapter = new ArrayAdapter<String>(WelcomeActivity.this, android.R.layout.simple_spinner_dropdown_item, a_files);
 
+        //Create the spinner that will be used in the alert dialog.
+        Spinner fileSpinner = new Spinner(WelcomeActivity.this);
+        fileSpinner.setAdapter(fileListAdapter);
+
+        //Create the alert dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(WelcomeActivity.this);
+        builder.setTitle("Choose a file to load from!");
+        builder.setView(fileSpinner);
+
+        //OK button to clear the alert dialog.
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //Get the choice from the user.
+                String choice = (String) fileSpinner.getSelectedItem();
+                File chosenFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Pente/" + choice);
+
+                //Create an input stream from the File object.
+                Uri fileUri = Uri.fromFile(chosenFile);
+                try {
+                    InputStream inputStream = getContentResolver().openInputStream(fileUri);
+
+                    if (inputStream != null)
+                    {
+                        //If the file could be opened as an input stream, load the data into the round object.
+                        Round loadedRound = new Round();
+                        boolean success = loadedRound.LoadGameData(inputStream);
+
+                        if (success)
+                        {
+                            //Attach the loaded round to the intent and go to the RoundViewActivity.
+                            Intent intent = new Intent(getApplicationContext(), RoundViewActivity.class);
+                            intent.putExtra("round", loadedRound);
+                            intent.putExtra("loadedFromFile", true);
+                            startActivity(intent);
+                        }
+                        else
+                        {
+                            DisplayInvalidFile();
+                        }
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+            }
+        });
+
+        //Cancel button to cancel the file loading process.
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //No need to do anything here.
+            }
+        });
+
+        //Display the alert dialog.
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 }
