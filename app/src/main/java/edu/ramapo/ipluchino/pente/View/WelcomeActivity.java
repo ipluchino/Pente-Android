@@ -121,62 +121,78 @@ public class WelcomeActivity extends AppCompatActivity {
     //https://stackoverflow.com/questions/9157887/android-how-to-use-spinner-in-an-alertdialog
     private void DisplaySavedFiles(Vector<String> a_files)
     {
-        ArrayAdapter<String> fileListAdapter = new ArrayAdapter<String>(WelcomeActivity.this, android.R.layout.simple_spinner_dropdown_item, a_files);
-
-        //Create the spinner that will be used in the alert dialog.
-        Spinner fileSpinner = new Spinner(WelcomeActivity.this);
-        fileSpinner.setAdapter(fileListAdapter);
-
         //Create the alert dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(WelcomeActivity.this);
-        builder.setTitle("Choose a file to load from!");
-        builder.setView(fileSpinner);
+        builder.setTitle("Choose Load File");
 
-        //OK button to clear the alert dialog.
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                //Get the choice from the user.
-                String choice = (String) fileSpinner.getSelectedItem();
-                File chosenFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Pente/" + choice);
+        //Let the user know there are no saved game files if none exist yet. Otherwise, display the spinner.
+        if (a_files.isEmpty())
+        {
+            builder.setMessage("No saved games found.");
 
-                //Create an input stream from the File object.
-                Uri fileUri = Uri.fromFile(chosenFile);
-                try {
-                    InputStream inputStream = getContentResolver().openInputStream(fileUri);
-
-                    if (inputStream != null)
-                    {
-                        //If the file could be opened as an input stream, load the data into the round object.
-                        Round loadedRound = new Round();
-                        boolean success = loadedRound.LoadGameData(inputStream);
-
-                        if (success)
-                        {
-                            //Attach the loaded round to the intent and go to the RoundViewActivity.
-                            Intent intent = new Intent(getApplicationContext(), RoundViewActivity.class);
-                            intent.putExtra("round", loadedRound);
-                            intent.putExtra("loadedFromFile", true);
-                            startActivity(intent);
-                        }
-                        else
-                        {
-                            DisplayInvalidFile();
-                        }
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    //No need to do anything here.
                 }
+            });
+        }
+        else
+        {
+            ArrayAdapter<String> fileListAdapter = new ArrayAdapter<String>(WelcomeActivity.this, android.R.layout.simple_spinner_dropdown_item, a_files);
+
+            //Create the spinner that will be used in the alert dialog.
+            Spinner fileSpinner = new Spinner(WelcomeActivity.this);
+            fileSpinner.setAdapter(fileListAdapter);
+
+            builder.setView(fileSpinner);
+
+            //OK button to clear the alert dialog.
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    //Get the choice from the user.
+                    String choice = (String) fileSpinner.getSelectedItem();
+                    File chosenFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Pente/" + choice);
+
+                    //Create an input stream from the File object.
+                    Uri fileUri = Uri.fromFile(chosenFile);
+                    try {
+                        InputStream inputStream = getContentResolver().openInputStream(fileUri);
+
+                        if (inputStream != null)
+                        {
+                            //If the file could be opened as an input stream, load the data into the round object.
+                            Round loadedRound = new Round();
+                            boolean success = loadedRound.LoadGameData(inputStream);
+
+                            if (success)
+                            {
+                                //Attach the loaded round to the intent and go to the RoundViewActivity.
+                                Intent intent = new Intent(getApplicationContext(), RoundViewActivity.class);
+                                intent.putExtra("round", loadedRound);
+                                intent.putExtra("loadedFromFile", true);
+                                startActivity(intent);
+                            }
+                            else
+                            {
+                                DisplayInvalidFile();
+                            }
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
 
 
-            }
-        });
+                }
+            });
 
-        //Cancel button to cancel the file loading process.
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                //No need to do anything here.
-            }
-        });
+            //Cancel button to cancel the file loading process.
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    //No need to do anything here.
+                }
+            });
+
+        }
 
         //Display the alert dialog.
         AlertDialog alertDialog = builder.create();
