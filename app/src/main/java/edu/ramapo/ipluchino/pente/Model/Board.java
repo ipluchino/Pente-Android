@@ -59,7 +59,7 @@ public class Board implements Serializable {
 
     /**
      Sets the board vector of the Board class.
-     @param a_board A 2-D vector of characters representing a Pente board.
+     @param a_board A 2-D Vector of characters representing a Pente board.
      @return A boolean, whether or not the board was successfully set.
      */
     public boolean SetBoard(Vector<Vector<Character>> a_board)

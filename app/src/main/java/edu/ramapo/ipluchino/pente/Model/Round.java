@@ -28,6 +28,9 @@ public class Round implements Serializable {
     private int m_nextPlayerIndex;
 
     //Default Constructor
+    /**
+     Default constructor of the Round class.
+     */
     public Round()
     {
         //Initialize the human and computer player.
@@ -43,45 +46,97 @@ public class Round implements Serializable {
     }
 
     //Copy constructor - to be implemented.
+    /**
+     Copy constructor of the Round class.
+     */
     public Round(Round a_otherRound)
     {
+        //Create the Human and Computer objects.
+        m_playerList.add(new Human());
+        m_playerList.add(new Computer());
 
+        //Copy the board.
+        m_board = new Board(a_otherRound.m_board);
+
+        //Copy the Human information.
+        SetHumanColor(a_otherRound.GetHumanColor());
+        SetHumanScore(a_otherRound.GetHumanScore());
+        SetHumanCapturedPairs(a_otherRound.GetHumanCapturedPairs());
+
+        //Copy the Computer information.
+        SetComputerColor(a_otherRound.GetComputerColor());
+        SetComputerScore(a_otherRound.GetComputerScore());
+        SetComputerCapturedPairs(a_otherRound.GetComputerCapturedPairs());
+
+        //Copy the next turn information.
+        SetNextPlayerIndex(a_otherRound.m_nextPlayerIndex);
     }
 
-    //Selectors
+    /**
+     Gets the Human player's tournament score.
+     @return An integer, representing the Human's tournament score.
+     */
     public int GetHumanScore()
     {
         return m_playerList.get(0).GetScore();
     }
 
+    /**
+     Gets the Computer player's tournament score.
+     @return An integer, representing the Computer's tournament score.
+     */
     public int GetComputerScore()
     {
         return m_playerList.get(1).GetScore();
     }
 
+    /**
+     Gets the Human player's stone color.
+     @return A character, representing the Human's stone color.
+     */
     public char GetHumanColor()
     {
         return m_playerList.get(0).GetColor();
     }
 
+    /**
+     Gets the Computer player's stone color.
+     @return A character, representing the Computer's stone color.
+     */
     public char GetComputerColor()
     {
         return m_playerList.get(1).GetColor();
     }
 
+    /**
+     Gets the Human player's captured pair count.
+     @return An integer, representing the Human's captured pair count.
+     */
     public int GetHumanCapturedPairs()
     {
         return m_playerList.get(0).GetCapturedPairs();
     }
 
+    /**
+     Gets the Computer player's captured pair count.
+     @return An integer, representing the Computer's captured pair count.
+     */
     public int GetComputerCapturedPairs()
     {
         return m_playerList.get(1).GetCapturedPairs();
     }
 
+    /**
+     Gets the next player index.
+     @return An integer, representing the next player index of the round.
+     */
     public int GetNextPlayerIndex() { return m_nextPlayerIndex; }
 
-    //Mutators
+    /**
+     Sets the next player index.
+     @param a_index An integer, representing what the next player index should be set to.
+     @return A boolean, whether or not the next player index was successfully set.
+     */
     public boolean SetNextPlayerIndex(int a_index)
     {
         if (a_index != -1 && a_index != 0 && a_index != 1) return false;
@@ -91,36 +146,69 @@ public class Round implements Serializable {
         return true;
     }
 
+    /**
+     Sets the Human player's tournament score.
+     @param a_score An integer, representing the tournament score to set the Human's tournament score to.
+     @return A boolean, whether or not the Human's tournament score was successfully set.
+     */
     public boolean SetHumanScore(int a_score)
     {
         return m_playerList.get(0).SetScore(a_score);
     }
 
+    /**
+     Sets the Computer player's tournament score
+     @param a_score An integer, representing the tournament score to set the Computer's tournament score to.
+     @return A boolean, whether or not the Computer's tournament score was successfully set.
+     */
     public boolean SetComputerScore(int a_score)
     {
         return m_playerList.get(1).SetScore(a_score);
     }
 
+    /**
+     Sets the Human player's stone color.
+     @param a_color A character, representing the color to set the Human's stone color to.
+     @return A boolean, whether or not the Human's stone color was successfully set.
+     */
     public boolean SetHumanColor(char a_color)
     {
         return m_playerList.get(0).SetColor(a_color);
     }
 
+    /**
+     Sets the computer player's stone color.
+     @param a_color A character, representing the color to set the Computer's stone color to.
+     @return A boolean, whether or not the Computer's stone color was successfully set.
+     */
     public boolean SetComputerColor(char a_color)
     {
         return m_playerList.get(1).SetColor(a_color);
     }
 
+    /**
+     Sets the Human player's captured pair count.
+     @param a_capturedPairs An integer, representing the captured pair count the Human's captured pair count is being set to.
+     @return A boolean, whether or not the Human's captured pair count was successfully set.
+     */
     public boolean SetHumanCapturedPairs(int a_capturedPairs)
     {
         return m_playerList.get(0).SetCapturedPairs(a_capturedPairs);
     }
 
+    /**
+     Sets the Computer player's captured pair count.
+     @param a_capturedPairs An integer, representing the captured pair count the Computer's captured pair count is being set to.
+     @return A boolean, whether or not the Computer's captured pair count was successfully set.
+     */
     public boolean SetComputerCapturedPairs(int a_capturedPairs)
     {
         return m_playerList.get(1).SetCapturedPairs(a_capturedPairs);
     }
 
+    /**
+     Sets the Human player to go first for the round.
+     */
     public void SetHumanFirst()
     {
         SetHumanColor('W');
@@ -128,6 +216,9 @@ public class Round implements Serializable {
         SetNextPlayerIndex(0);
     }
 
+    /**
+     Sets the Computer player to go first for the round.
+     */
     public void SetComputerFirst()
     {
         SetComputerColor('W');
@@ -135,6 +226,9 @@ public class Round implements Serializable {
         SetNextPlayerIndex(1);
     }
 
+    /**
+     Determines and sets who should go first at the start of the round, via tournament scores.
+     */
     public void DetermineFirstPlayerViaScore()
     {
         //The player who has the higher score gets to play first for the round if the scores are not tied.
@@ -148,28 +242,9 @@ public class Round implements Serializable {
         }
     }
 
-    public boolean CoinToss(String a_choice)
-    {
-        Random rand = new Random();
-
-        //Randomly generate either 1 or 2. 1 Represents heads, while 2 represents tails.
-        int coin = 1 + rand.nextInt(2);
-
-        //Output the coin toss result to the screen so the user can see if it was heads or tails.
-        if (coin == HEADS)
-        {
-            System.out.println("The result of the coin toss was Heads!");
-        }
-        else
-        {
-            System.out.println("The result of the coin toss was Tails!");
-        }
-
-        //If the user correctly called the toss, return true, otherwise return false.
-        return (a_choice.equals("H") && coin == HEADS) || (a_choice.equals("T") && coin == TAILS);
-    }
-
-    //Probably can remove this later.
+    /**
+     Displays all of the information about a current round of Pente textually.
+     */
     public void DisplayGame()
     {
         //Display the board first.
@@ -214,6 +289,10 @@ public class Round implements Serializable {
         }
     }
 
+    /**
+     Determines if the current round of Pente has ended.
+     @return A string, representing if the current round of Pente is over. An empty string means the round is not over.
+     */
     public String RoundOver()
     {
         //If one of the players has achieved five consecutive pieces in any direction, the round is over.
@@ -260,6 +339,11 @@ public class Round implements Serializable {
 
     //https://www.w3schools.com/java/java_files_create.asp
     //https://stackoverflow.com/questions/15711098/trying-to-create-a-file-in-android-open-failed-erofs-read-only-file-system
+    /**
+     Saves the Pente tournament to a file.
+     @param a_fileName A string, representing the name of the file to save the tournament to.
+     @return An IOException will be thrown if one occurs.
+     */
     public void SaveGame(String a_fileName) throws IOException
     {
         File file = new File(a_fileName);
@@ -336,6 +420,11 @@ public class Round implements Serializable {
     }
 
     //https://www.baeldung.com/java-buffered-reader
+    /**
+     Loads a tournament from a file.
+     @param a_inputStream An InputStream object, representing the InputStream of the file being read from.
+     @return A boolean, representing whether or not the tournament was successfully loaded from the file. An IOException will be thrown if one occurs.
+     */
     public boolean LoadGameData(InputStream a_inputStream) throws IOException
     {
         Vector<Vector<Character>> board = new Vector<Vector<Character>>();
@@ -479,12 +568,18 @@ public class Round implements Serializable {
         return true;
     }
 
+    /**
+     Updates the tournament scores of both player after the conclusion of a round.
+     */
     public void UpdateScores()
     {
         SetHumanScore(GetHumanScore() + m_board.ScoreBoard(GetHumanColor(), GetHumanCapturedPairs()));
         SetComputerScore(GetComputerScore() + m_board.ScoreBoard(GetComputerColor(), GetComputerCapturedPairs()));
     }
 
+    /**
+     Resets the round information in preparation to play another round, if the user wishes to.
+     */
     public void ResetRound()
     {
         m_board.ClearBoard();
@@ -493,16 +588,29 @@ public class Round implements Serializable {
         SetNextPlayerIndex(-1);
     }
 
+    /**
+     Determines the score earned by the Human player after a round has concluded.
+     @return An integer, representing the Human player's tournament score.
+     */
     public int ScoreHuman()
     {
         return m_board.ScoreBoard(GetHumanColor(), GetHumanCapturedPairs());
     }
 
+    /**
+     Determines the score earned by the Computer player after a round has concluded.
+     @return An integer, representing the Computer player's tournament score.
+     */
     public int ScoreComputer()
     {
         return m_board.ScoreBoard(GetComputerColor(), GetComputerCapturedPairs());
     }
 
+    /**
+     Plays through one turn of the current round of Pente.
+     @param a_location A string, representing the location of the stone being placed.
+     @return A string, describing the move that was just made. Used for logging purposes.
+     */
     public String PlayTurn(String a_location)
     {
         //Let the player make their move.
@@ -514,6 +622,11 @@ public class Round implements Serializable {
         return move;
     }
 
+    /**
+     Determines if a provided move is valid given the current round conditions.
+     @param a_location A string, representing the location being checked.
+     @return A string, representing whether or not the location is valid. An empty string represents the move is valid, otherwise the move is invalid.
+     */
     public String ValidMove(String a_location)
     {
         //There is a handicap for the second turn of the first player. The play must be within three intersections of the center piece.
@@ -532,28 +645,50 @@ public class Round implements Serializable {
         return "";
     }
 
+    /**
+     Determines if there is a stone at a provided location on the board.
+     @param a_row An integer, representing the row of the location being checked.
+     @param a_col An integer, representing the column of the location being checked.
+     @return A character, representing what is currently at the location being checked.
+     */
     public char StoneAt(int a_row, int a_col)
     {
         Vector<Vector<Character>> board = m_board.GetBoard();
         return board.get(a_row).get(a_col);
     }
 
+    /**
+     Generates the most optimal move for the Human player given the current conditions of the round.
+     @return A Vector of strings representing the location of the optimal play and the reasoning behind the most optimal play.
+     */
     public Vector<String> GetHelp()
     {
         Human humanPlayer = (Human) m_playerList.get(0);
         return humanPlayer.AskForHelp(m_board);
     }
 
+    /**
+     Determines if the scores of the Human player and Computer player are equal.
+     @return A boolean, whether or not the scores of both players are tied.
+     */
     public boolean ScoresTied()
     {
         return GetHumanScore() == GetComputerScore();
     }
 
+    /**
+     Determines if it is currently the Human's turn.
+     @return A boolean, whether or not it is the Human player's turn.
+     */
     public boolean IsHumanTurn()
     {
         return m_nextPlayerIndex == 0;
     }
 
+    /**
+     The main function of the Round class - used for testing purposes.
+     @param args An array of strings, representing command line arguments.
+     */
     public static void main(String[] args)
     {
         Round r = new Round();

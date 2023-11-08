@@ -16,7 +16,9 @@ public class Player implements Serializable {
     //The number of captured pairs for the player.
     protected int m_capturedPairs;
 
-    //Constructor
+    /**
+     Default constructor for the Player class.
+     */
     public Player()
     {
         m_color = 'W';
@@ -24,20 +26,35 @@ public class Player implements Serializable {
         m_capturedPairs = 0;
     }
 
-    //Selectors
+    /**
+     Gets the stone color of the player.
+     @return a character, representing the stone color of the player.
+     */
     public char GetColor() {
         return m_color;
     }
 
+    /**
+     Gets the tournament score of the player.
+     @return An integer, representing the tournament score of the player.
+     */
     public int GetScore() {
         return m_score;
     }
 
+    /**
+     Gets the captured pair count of the player.
+     @return An integer, representing the player's captured pair count.
+     */
     public int GetCapturedPairs() {
         return m_capturedPairs;
     }
 
-    //Mutators
+    /**
+     Sets the stone color of the player.
+     @param a_color A character, representing the stone color to set the player's stone color to.
+     @return A boolean, whether or not the tournament score was successfully set.
+     */
     public boolean SetColor(char a_color)
     {
         if (a_color != 'W' && a_color != 'B') return false;
@@ -47,6 +64,11 @@ public class Player implements Serializable {
         return true;
     }
 
+    /**
+     Sets the tournament score of the player.
+     @param a_score An integer, representing the tournament score to set the player's tournament score to.
+     @return A boolean, whether or not the tournament score was successfully set.
+     */
     public boolean SetScore(int a_score)
     {
         if (a_score < 0) return false;
@@ -56,6 +78,11 @@ public class Player implements Serializable {
         return true;
     }
 
+    /**
+     Sets the captured pair count of the player.
+     @param a_capturedPairs An integer representing the captured pair count to set the player's captured pair count to.
+     @return A boolean, whether or not the captured pair count was successfully set.
+     */
     public boolean SetCapturedPairs(int a_capturedPairs)
     {
         if (a_capturedPairs < 0) return false;
@@ -65,13 +92,24 @@ public class Player implements Serializable {
         return true;
     }
 
-    //Utility Functions
-    //Override in Human and Computer class.
-    public String MakePlay(Board a_board, String a_Location)
+    /**
+     Virtual function that is redefined in the Human and Computer class. This function does nothing.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_location A string, representing the location the player would like to place their stone.
+     @return A string, representing the description of the player's move. This specific function only returns an empty string.
+     */
+    public String MakePlay(Board a_board, String a_location)
     {
         return "";
     }
 
+    /**
+     Converts a Vector index row/col to a board view representation in the format: "J10".
+     @param a_row An integer, representing the vector index of a row.
+     @param a_col An integer, representing the vector index of a column.
+     @param a_board A Board object, representing the current board of the round.
+     @return What the function returns - don't include if void. Also list special cases, such as what is returned if error.
+     */
     public String ExtractLocation(int a_row, int a_col, Board a_board)
     {
         int boardRow = a_board.ConvertRowIndex(a_row);
@@ -80,12 +118,23 @@ public class Player implements Serializable {
         return boardCol + Integer.toString(boardRow);
     }
 
+    /**
+     Converts a directional index into its string representation.
+     @param a_directionIndex An integer, representing the directional index to be converted.
+     @return A string, representing the name of the direction.
+     */
     public String GetDirection(int a_directionIndex)
     {
         return StrategyConstants.DIRECTION_NAMES.get(a_directionIndex);
     }
 
     //https://www.educative.io/answers/how-to-generate-random-numbers-in-java
+    /**
+     To determine the most optimal location for a player to place their stone.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_color A character, representing the player's stone color.
+     @return A Vector of strings containing the location of the most optimal play, as well as the reasoning on why this is the most optimal play.
+     */
     public Vector<String> OptimalPlay(Board a_board, char a_color)
     {
         //Location represents the location on the board of the most optimal play, while reasoning represents the explanation why it is the most optimal.
@@ -239,6 +288,12 @@ public class Player implements Serializable {
     }
 
     //https://stackoverflow.com/questions/33088677/sort-list-of-objects-using-collection-sort-with-lambdas-only
+    /**
+     Finds a location on the board that results in the most captures possible, if any exist.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_color A character, representing the player's stone color.
+     @return A Vector of integers containing the row and column of the best possible location that results in the most captures.
+     */
     public Vector<Integer> MakeCapture(Board a_board, char a_color)
     {
         Vector<Vector<Character>> board = a_board.GetBoard();
@@ -281,6 +336,14 @@ public class Player implements Serializable {
 
     }
 
+    /**
+     Determines the number of captures that would occur if a player places their stone at a specified location.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_color A character, representing the player's stone color.
+     @param a_row An integer, representing a row a player is placing their stone.
+     @param a_col An integer, representing a column a player is placing their stone.
+     @return An integer, representing the number of captured pairs that would occur if a player plays their stone at the specified location.
+     */
     public int CanCaptureIfPlaced(Board a_board, char a_color, int a_row, int a_col)
     {
         Vector<Vector<Character>> board = a_board.GetBoard();
@@ -318,6 +381,12 @@ public class Player implements Serializable {
         return numCaptures;
     }
 
+    /**
+     Finds a location on the board that prevents the opponent from making a capture on their following turn.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_color A character, representing the player's stone color.
+     @return A Vector of integers containing the row and column of the location that blocks the opponent from making a capture on their next turn.
+     */
     public Vector<Integer> PreventCapture(Board a_board, char a_color)
     {
         char opponentColor = a_board.OpponentColor(a_color);
@@ -328,6 +397,14 @@ public class Player implements Serializable {
         return possiblePreventCapture;
     }
 
+    /**
+     Finds all possible sets of locations given constraints regarding the stone color, stone count, and a number of consecutive locations to search for.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_numPlaced An integer, representing the number of a player's stone to search for.
+     @param a_color A character, representing the player's stone color to search for.
+     @param a_distance An integer, representing the number of consecutive locations to be included in the search.
+     @return A 3-D Vector of integers, representing sets of locations that match the provided search parameters.
+     */
     Vector<Vector<Vector<Integer>>> FindAllMoves(Board a_board, int a_numPlaced, char a_color, int a_distance)
     {
         //A copy of the board's data.
@@ -383,6 +460,12 @@ public class Player implements Serializable {
         return result;
     }
 
+    /**
+     Finds all of the indices that are empty, given a set of locations.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_locations A 2-D Vector of integers, representing a set of locations on the board.
+     @return A vector of integers containing the indices of a_locations that are empty locations on the board.
+     */
     public Vector<Integer> FindEmptyIndices(Board a_board, Vector<Vector<Integer>> a_locations)
     {
         Vector<Vector<Character>> board = a_board.GetBoard();
@@ -403,7 +486,14 @@ public class Player implements Serializable {
         return emptyIndices;
     }
 
-    public int FindConsecutiveIfPlaced(Board a_board, Vector<Vector<Integer>> a_locations, int emptyIndex)
+    /**
+     Finds the number of consecutive pieces that would be placed on the board given a set of locations and an index to place the stone.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_locations A 2-D Vector of integers, representing a set of locations on the board.
+     @param a_emptyIndex An integer, representing the index in a_locations that is empty on the board.
+     @return An integer, representing the number of consecutive stones that will occur if a stone is placed at a_emptyIndex in a_locations.
+     */
+    public int FindConsecutiveIfPlaced(Board a_board, Vector<Vector<Integer>> a_locations, int a_emptyIndex)
     {
         Vector<Vector<Character>> board = a_board.GetBoard();
 
@@ -411,7 +501,7 @@ public class Player implements Serializable {
         int afterTotal = 0;
 
         //Find the number of consecutive pieces before emptyIndex in a_locations.
-        int index = emptyIndex;
+        int index = a_emptyIndex;
         while (--index >= 0)
         {
             int row = a_locations.get(index).get(0);
@@ -427,7 +517,7 @@ public class Player implements Serializable {
         }
 
         //Find the number of consecutive pieces after emptyIndex in a_locations.
-        index = emptyIndex;
+        index = a_emptyIndex;
         while (++index < a_locations.size())
         {
             int row = a_locations.get(index).get(0);
@@ -447,6 +537,14 @@ public class Player implements Serializable {
     }
 
     //https://www.geeksforgeeks.org/java-program-to-shuffle-vector-elements/#
+    /**
+     Finds a location on the board that builds initiative for the player.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_numPlaced An integer, representing the amount of stones placed by the opponent in an open five consecutive locations.
+     @param a_color A character, representing the player's stone color.
+     @param a_dangerColor A character, representing the stone color to check if placing it at a location would put it at risk of being captured.
+     @return A Vector of integers containing the row, column, and direction being built in of the best location to build initiative, if any exist.
+     */
     public Vector<Integer> BuildInitiative(Board a_board, int a_numPlaced, char a_color, char a_dangerColor)
     {
         Vector<Vector<Character>> board = a_board.GetBoard();
@@ -548,6 +646,13 @@ public class Player implements Serializable {
         }
     }
 
+    /**
+     Finds a location on the board that counters the initiative of the opponent.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_numPlaced An integer, representing the amount of stones placed by the opponent in an open five consecutive locations.
+     @param a_color A character, representing the player's stone color.
+     @return A Vector of integers containing the row, column, and direction being blocked of the best location to counter initiative, if any exist.
+     */
     public Vector<Integer> CounterInitiative(Board a_board, int a_numPlaced, char a_color)
     {
         char opponentColor = a_board.OpponentColor(a_color);
@@ -582,6 +687,13 @@ public class Player implements Serializable {
     }
 
     //https://docs.oracle.com/javase/8/docs/api/java/lang/StringBuilder.html --> StringBuilder because you can't pass a string by reference in Java.
+    /**
+     Find a location on the board that would cause the player to win the round.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_color A character, representing the player's stone color.
+     @param a_winReason A StringBuilder object, representing the reasoning of the win, or if the win is being delayed.
+     @return A Vector of integers containing the row and column of the location that would result in the player winning the game.
+     */
     public Vector<Integer> MakeWinningMove(Board a_board, char a_color, StringBuilder a_winReason)
     {
         //First check if there are any moves that allow for five consecutive pieces.
@@ -636,6 +748,12 @@ public class Player implements Serializable {
         return new Vector<Integer>();
     }
 
+    /**
+     Finds a location on the board that prevents the opponent from winning the round.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_color A character, representing the player's stone color.
+     @return A Vector of integers containing the row and column of the location that would result in the player preventing the opponent from winning the game.
+     */
     public Vector<Integer> PreventWinningMove(Board a_board, char a_color)
     {
         char opponentColor = a_board.OpponentColor(a_color);
@@ -655,6 +773,13 @@ public class Player implements Serializable {
         }
     }
 
+    /**
+     Determines if placing a stone in a specified location would put the player in danger of being captured on the following turn.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_location A Vector of integers, representing the row and column of the location being checked.
+     @param a_color A character, representing the stone color of the player placing the stone at a_location.
+     @return A boolean, whether or not the player is at risk of being captured the following turn.
+     */
     public boolean InDangerOfCapture(Board a_board, Vector<Integer> a_location, char a_color)
     {
         Vector<Vector<Character>> board = a_board.GetBoard();
@@ -708,6 +833,12 @@ public class Player implements Serializable {
         return false;
     }
 
+    /**
+     Finds a location on the board that will initiate a flank.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_color A character, representing the stone color to search for flanks.
+     @return Return Value: A Vector of integers containing the row, column, and direction being built in that initiates a flank, if it exists.
+     */
     public Vector<Integer> FindFlanks(Board a_board, char a_color)
     {
         char opponentColor = a_board.OpponentColor(a_color);
@@ -736,6 +867,13 @@ public class Player implements Serializable {
         return new Vector<Integer>();
     }
 
+    /**
+     Finds a location on the board that would create a deadly tessera (four consecutive pieces with an empty location on either side).
+     @param a_board A Board object, representing the current board of the round.
+     @param a_color A character, representing the stone color to search for deadly tesseras.
+     @param a_dangerColor A character, representing the stone color to check if it is in danger of being captured.
+     @return A Vector of integers containing the row, column, and direction being built in that creates a deadly tessera, if it exists.
+     */
     public Vector<Integer> FindDeadlyTessera(Board a_board, char a_color, char a_dangerColor)
     {
         //Search for all valid consecutive 6 locations that have 3 of the specified piece color and 3 empty locations.
@@ -777,6 +915,13 @@ public class Player implements Serializable {
         }
     }
 
+    /**
+     Finds a location on the board that would create three consecutive pieces, if any are possible, given multiple sets of possible locations to build on.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_possibleMoves A 3-D Vector of integers, representing sequences of five locations on the board.
+     @param a_dangerColor A character, representing the stone color to check if it is in danger of being captured.
+     @return A Vector of integers containing the row, column, and direction being built in that creates three consecutive stones, if it exists.
+     */
     public Vector<Integer> FindThreeConsecutive(Board a_board, Vector<Vector<Vector<Integer>>> a_possibleMoves, char a_dangerColor)
     {
         //Search for possible 3 in a rows. If there is one, that is the most optimal play.
@@ -797,6 +942,13 @@ public class Player implements Serializable {
         return new Vector<Integer>();
     }
 
+    /**
+     Finds a location on the board that would create four consecutive pieces, if any are possible, given multiple sets of possible locations to build on.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_possibleMoves A 3-D Vector of integers, representing sequences of five locations on the board.
+     @param a_dangerColor A character, representing the stone color to check if it is in danger of being captured.
+     @return A Vector of integers containing the row, column, and direction being built in that creates four consecutive stones, if it exists.
+     */
     public Vector<Integer> FindFourConsecutive(Board a_board, Vector<Vector<Vector<Integer>>> a_possibleMoves, char a_dangerColor)
     {
         //Search for possible 4 in a rows. If there is one, that is the most optimal play.
@@ -817,6 +969,11 @@ public class Player implements Serializable {
         return new Vector<Integer>();
     }
 
+    /**
+     Finds the most optimal play when the handicap (second turn of the first player) is active.
+     @param a_board A Board object, representing the current board of the round.
+     @return A Vector of integers, representing the row and column of the most optimal handicap play.
+     */
     public Vector<Integer> FindHandicapPlay(Board a_board)
     {
         Vector<Vector<Vector<Integer>>> possibleMoves = FindAllMoves(a_board, 1, 'W', StrategyConstants.CONSECUTIVE_5_DISTANCE);
@@ -852,6 +1009,10 @@ public class Player implements Serializable {
         return playLocations.get(0);
     }
 
+    /**
+     The main function of the Player class - used for testing purposes.
+     @param args An array of strings, representing command line arguments.
+     */
     public static void main(String[] args)
     {
         /*
