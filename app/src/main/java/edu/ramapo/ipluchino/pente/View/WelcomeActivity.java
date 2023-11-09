@@ -49,13 +49,11 @@ public class WelcomeActivity extends AppCompatActivity {
         m_loadButton = findViewById(R.id.loadGameButton);
 
         //Set onClick listeners.
+        //https://stackoverflow.com/questions/20241857/android-intent-cannot-resolve-constructor
         m_newButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("myTag", "New Game was clicked");
-
                 //Switch to the Coin Toss state, since new games always begin with a coin toss.
-                //https://stackoverflow.com/questions/20241857/android-intent-cannot-resolve-constructor
                 Intent intent = new Intent(getApplicationContext(), CoinTossActivity.class);
 
                 //Pass a fresh round object to the Coin Toss Activity.

@@ -62,7 +62,6 @@ public class CoinTossActivity extends AppCompatActivity {
         m_headsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("myTag", "Heads was clicked");
                 CoinToss(HEADS);
             }
         });
@@ -70,7 +69,6 @@ public class CoinTossActivity extends AppCompatActivity {
         m_tailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("myTag", "Tails was clicked");
                 CoinToss(TAILS);
             }
         });
@@ -78,8 +76,6 @@ public class CoinTossActivity extends AppCompatActivity {
         m_continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("myTag", "Continue was clicked");
-
                 //Pass the round object with the newly set first player to the RoundViewActivity.
                 m_intent = new Intent(getApplicationContext(), RoundViewActivity.class);
                 m_intent.putExtra("round", m_currentRound);

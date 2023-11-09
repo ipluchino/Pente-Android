@@ -54,6 +54,7 @@ public class RoundViewActivity extends AppCompatActivity {
     private TextView m_humanInformationTextView;
     private TextView m_computerInformationTextView;
     private TextView m_scoringTextView;
+    private TextView m_lastMoveTextView;
     private Vector<String> m_logData;
     private int m_logCounter = 0;
 
@@ -80,6 +81,7 @@ public class RoundViewActivity extends AppCompatActivity {
         m_humanInformationTextView = findViewById(R.id.humanInformationTextView);
         m_computerInformationTextView = findViewById(R.id.computerInformationTextView);
         m_scoringTextView = findViewById(R.id.scoringTextView);
+        m_lastMoveTextView = findViewById(R.id.lastMoveTextView);
         m_logData = new Vector<String>();
 
         //Initialize the board
@@ -130,7 +132,9 @@ public class RoundViewActivity extends AppCompatActivity {
                     String location = boardColumn + boardRow;
                     m_highlightedButton = null;
 
+                    //Make the move and update the last move TextView.
                     String move = m_round.PlayTurn(location);
+                    m_lastMoveTextView.setText("Last Move: " + move);
 
                     //Add the move to the log and update the display.
                     m_logCounter++;
@@ -154,7 +158,9 @@ public class RoundViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Note: parameter is an empty string because the computer will automatically choose its optimal play location.
+                //Also update the last move TextView.
                 String move = m_round.PlayTurn("");
+                m_lastMoveTextView.setText("Last Move: " + move);
 
                 //Add the move to the log and update the display.
                 m_logCounter++;
@@ -655,13 +661,14 @@ public class RoundViewActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
-        //Remove the Human and Computer action buttons from the screen.
+        //Remove all Human and Computer action components from the screen.
         m_placeStoneButtonHuman.setVisibility(View.GONE);
         m_getHelpButton.setVisibility(View.GONE);
         m_saveAndExitButtonHuman.setVisibility(View.GONE);
         m_placeStoneButtonComputer.setVisibility(View.GONE);
         m_saveAndExitButtonComputer.setVisibility(View.GONE);
         m_nextTurnTextView.setText("Next turn: Game over!");
+        m_lastMoveTextView.setVisibility(View.GONE);
 
         //Obtain the scores earned by each player for the current round.
         String humanRoundScore = "Points scored by the Human this round: " + m_round.ScoreHuman() + "\n";
