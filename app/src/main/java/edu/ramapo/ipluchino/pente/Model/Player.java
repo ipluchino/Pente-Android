@@ -328,7 +328,7 @@ public class Player implements Serializable {
 
         //If there are multiple possible capture locations, the one that captures the most pieces should be prioritized.
         //To accomplish this, a lambda function is used to sort by capture number for each possible play.
-        allPossibleCaptures.sort((a, b) -> (a.get(2)).compareTo(b.get(1)));
+        allPossibleCaptures.sort((a, b) -> (b.get(2)).compareTo(a.get(2)));
 
         //Return the play that captures the most possible pieces in one play. Since the vector is sorted by capture number,
         //the first play is considered the most optimized.

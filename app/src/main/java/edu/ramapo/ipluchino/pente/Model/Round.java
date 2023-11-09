@@ -371,12 +371,12 @@ public class Round implements Serializable {
 
             //Write the human's game information to the file.
             fileWriter.write("\nHuman:\n");
-            fileWriter.write("Captured Pairs: " + GetHumanCapturedPairs() + "\n");
+            fileWriter.write("Captured pairs: " + GetHumanCapturedPairs() + "\n");
             fileWriter.write("Score: " + GetHumanScore() + "\n\n");
 
             //Write the computer's game information to the file.
             fileWriter.write("Computer:\n");
-            fileWriter.write("Captured Pairs: " + GetComputerCapturedPairs() + "\n");
+            fileWriter.write("Captured pairs: " + GetComputerCapturedPairs() + "\n");
             fileWriter.write("Score: " + GetComputerScore() + "\n\n");
 
             //Write the next player's turn to the file.
