@@ -5,9 +5,17 @@ import java.util.Vector;
 
 public class Human extends Player {
 
+    /**
+     Default constructor for the Human class.
+     */
     public Human() { }
 
-    //CONVERT RETURN VALUE TO STRING OR VECTOR? SO THE HUMAN PLAY HISTORY CAN BE SAVED?
+    /**
+     Lets the Human player make its play - virtual function from the Player class.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_location A string, representing the location the Human player is placing their stone.
+     @return A string, representing the description of the Human player's move for logging purposes.
+     */
     public String MakePlay(Board a_board, String a_location)
     {
         //Place the stone on the board.
@@ -21,6 +29,11 @@ public class Human extends Player {
         return playMade;
     }
 
+    /**
+     Gets help for the Human player by determining the most optimal play.
+     @param a_board A Board object, representing the current board of the round.
+     @return  A Vector of strings, representing the most optimal play, as well as the reasoning on why it is the most optimal play.
+     */
     public Vector<String> AskForHelp(Board a_board)
     {
         Vector<String> result = new Vector<String>();
@@ -36,6 +49,10 @@ public class Human extends Player {
         return result;
     }
 
+    /**
+     The main function of the Human class - used for testing purposes.
+     @param args An array of strings, representing command line arguments.
+     */
     public static void main(String[] args)
     {
         Board b = new Board();

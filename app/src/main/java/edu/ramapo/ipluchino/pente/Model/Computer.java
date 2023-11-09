@@ -5,9 +5,17 @@ import java.util.Vector;
 
 public class Computer extends Player {
 
+    /**
+     Default constructor for the Computer class.
+     */
     public Computer() { }
 
-    //CONVERT RETURN VALUE TO STRING OR VECTOR? SO THE EXPLANATION IS RETURNED.
+    /**
+     Lets the Computer player make its play - virtual function from the Player class.
+     @param a_board A Board object, representing the current board of the round.
+     @param a_location A string, representing the location the Computer player is placing their stone.
+     @return A string, representing the description of the Computer player's move for logging purposes.
+     */
     public String MakePlay(Board a_board, String a_location)
     {
         Vector<String> playInfo = OptimalPlay(a_board, m_color);
@@ -24,6 +32,10 @@ public class Computer extends Player {
         return reasoning;
     }
 
+    /**
+     The main function of the Computer class - used for testing purposes.
+     @param args An array of strings, representing command line arguments.
+     */
     public static void main(String[] args)
     {
         Board b = new Board();

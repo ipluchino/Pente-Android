@@ -1015,7 +1015,6 @@ public class Player implements Serializable {
      */
     public static void main(String[] args)
     {
-        /*
         Vector<Vector<Character>> testBoard = new Vector<Vector<Character>>() {
             {
                 add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'B')));
@@ -1045,16 +1044,8 @@ public class Player implements Serializable {
         Player p = new Player();
         b.SetBoard(testBoard);
 
-        //System.out.println(p.CanCaptureIfPlaced(b, 'W', 9, 9));
-        //System.out.println(p.PreventCapture(b, 'B'));
-
         Vector<Vector<Vector<Integer>>> testSequences = p.FindAllMoves(b, 3, 'B', 5);
         Vector<Vector<Integer>> sequence = testSequences.get(0);
-
-       //System.out.println("Sequence" + sequence);
-       //System.out.println("Empty Indices: " + p.FindEmptyIndices(b, sequence));
-       //System.out.println("Num Consecutive: " + p.FindConsecutiveIfPlaced(b, sequence, 1));
-
 
         p.SetCapturedPairs(0);
         StringBuilder win_reason = new StringBuilder();
@@ -1085,43 +1076,6 @@ public class Player implements Serializable {
         anotherBoard.DisplayBoard();
         System.out.println("Handicap play: " + p.FindHandicapPlay(anotherBoard));
         System.out.println();
-
-         */
-
-        Vector<Vector<Character>> testBoard = new Vector<Vector<Character>>() {
-            {
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', 'W', '-', '-', '-', 'W', '-', '-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', 'B', '-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-
-            }
-        };
-
-        Board b = new Board();
-        Player p = new Player();
-        b.SetBoard(testBoard);
-
-
-        Vector<String> optimalPlay = p.OptimalPlay(b, 'B');
-
-        b.DisplayBoard();
-        System.out.println(optimalPlay.get(1));
     }
 }
 

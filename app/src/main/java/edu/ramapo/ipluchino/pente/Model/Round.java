@@ -13,8 +13,6 @@ import java.io.FileWriter;
 public class Round implements Serializable {
     //Constants
     final int NUM_PLAYERS = 2;
-    final int HEADS = 1;
-    final int TAILS = 2;
 
     //Holds a list of the players currently playing the game. In this case, there will be one human player and one computer player.
     //m_playerList[0] will be the human player.
@@ -27,7 +25,6 @@ public class Round implements Serializable {
     //The current player whose turn it is. Will be either 'H' for human or 'C' for computer.
     private int m_nextPlayerIndex;
 
-    //Default Constructor
     /**
      Default constructor of the Round class.
      */
@@ -45,7 +42,6 @@ public class Round implements Serializable {
         m_nextPlayerIndex = -1;
     }
 
-    //Copy constructor - to be implemented.
     /**
      Copy constructor of the Round class.
      */
