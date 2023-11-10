@@ -1,6 +1,5 @@
 package edu.ramapo.ipluchino.pente.Model;
 
-import java.io.Serializable;
 import java.util.Vector;
 
 public class Human extends Player {
@@ -9,6 +8,18 @@ public class Human extends Player {
      Default constructor for the Human class.
      */
     public Human() { }
+
+    /**
+     The main function of the Human class - used for testing purposes.
+     @param args An array of strings, representing command line arguments.
+     */
+    public static void main(String[] args)
+    {
+        Board b = new Board();
+        Human h = new Human();
+
+        System.out.println(h.AskForHelp(b));
+    }
 
     /**
      Lets the Human player make its play - virtual function from the Player class.
@@ -47,17 +58,5 @@ public class Human extends Player {
         result.add(playInfo.get(0));
         result.add(explanation);
         return result;
-    }
-
-    /**
-     The main function of the Human class - used for testing purposes.
-     @param args An array of strings, representing command line arguments.
-     */
-    public static void main(String[] args)
-    {
-        Board b = new Board();
-        Human h = new Human();
-
-        System.out.println(h.AskForHelp(b));
     }
 }

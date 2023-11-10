@@ -1,9 +1,7 @@
 package edu.ramapo.ipluchino.pente.View;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -11,20 +9,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.transition.Fade;
 import android.transition.TransitionManager;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.Random;
-
 import edu.ramapo.ipluchino.pente.Model.Round;
 import edu.ramapo.ipluchino.pente.R;
 
 public class CoinTossActivity extends AppCompatActivity {
-    //Constants
+    //Constants.
     final int HEADS = 0;
     final int TAILS = 1;
 
-    //Private members
+    //Private variables.
     private Intent m_intent;
     private Round m_currentRound;
     private Button m_headsButton;
@@ -38,7 +33,10 @@ public class CoinTossActivity extends AppCompatActivity {
     private TextView m_lostTextView;
     private TextView m_resultTextView;
 
-
+    /**
+     Creates the CoinTossActivity and sets the layout, along with the event handlers.
+     @param savedInstanceState A Bundle object, that is used when the activity is being restored from a previous state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +56,8 @@ public class CoinTossActivity extends AppCompatActivity {
         m_wonTextView = findViewById(R.id.wonTextView);
         m_lostTextView = findViewById(R.id.lostTextView);
 
-        //Set onClick listeners.
+        //Set all of the onClickListeners for the buttons.
+        //Heads button onClickListener.
         m_headsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,6 +65,7 @@ public class CoinTossActivity extends AppCompatActivity {
             }
         });
 
+        //Tails button onClickListener.
         m_tailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,6 +73,7 @@ public class CoinTossActivity extends AppCompatActivity {
             }
         });
 
+        //Continue button onClickListener.
         m_continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,15 +85,16 @@ public class CoinTossActivity extends AppCompatActivity {
         });
     }
 
-    //Runs the coin toss and displays the result.
     //https://developer.android.com/reference/android/transition/Fade
     //https://stackoverflow.com/questions/43952275/transitionmanager-begindelayedtransition-doesnt-animate-scaling
     //https://developer.android.com/develop/ui/views/animations/transitions
-
+    /**
+     Simulates a coin toss and sets the first player of the round based on the results of the coin toss.
+     @param choice An integer, representing the Human player's call of the coin toss (0 for Heads, 1 for Tails).
+     */
     private void CoinToss(int choice) {
-        //Fade object to fade widgets in and out. The animation takes 1000 milliseconds.
+        //Fade object to fade widgets in and out. The animation takes 1000 milliseconds or 1 second.
         Fade fade = (Fade) new Fade().setDuration(1000);
-
         ViewGroup parentViewGroup = (ViewGroup) m_headsButton.getParent();
 
         //Fade the necessary widgets out, so the coin can be "flipped".
@@ -107,12 +109,14 @@ public class CoinTossActivity extends AppCompatActivity {
         Random rand = new Random();
         int coin = rand.nextInt(2);
 
+        //The human won the coin toss.
         if (coin == choice)
         {
             m_resultTextView.setText("You will go first because you called the toss correctly!");
             m_wonTextView.setVisibility(View.VISIBLE);
             m_currentRound.SetHumanFirst();
         }
+        //The computer won the coin toss.
         else
         {
             m_resultTextView.setText("The computer will go first because you called the toss incorrectly!");

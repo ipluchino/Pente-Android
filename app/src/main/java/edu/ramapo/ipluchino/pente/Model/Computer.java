@@ -1,6 +1,5 @@
 package edu.ramapo.ipluchino.pente.Model;
 
-import java.io.Serializable;
 import java.util.Vector;
 
 public class Computer extends Player {
@@ -9,6 +8,18 @@ public class Computer extends Player {
      Default constructor for the Computer class.
      */
     public Computer() { }
+
+    /**
+     The main function of the Computer class - used for testing purposes.
+     @param args An array of strings, representing command line arguments.
+     */
+    public static void main(String[] args)
+    {
+        Board b = new Board();
+        Computer c = new Computer();
+
+        c.MakePlay(b, "");
+    }
 
     /**
      Lets the Computer player make its play - virtual function from the Player class.
@@ -30,18 +41,6 @@ public class Computer extends Player {
         m_capturedPairs += captures;
 
         return reasoning;
-    }
-
-    /**
-     The main function of the Computer class - used for testing purposes.
-     @param args An array of strings, representing command line arguments.
-     */
-    public static void main(String[] args)
-    {
-        Board b = new Board();
-        Computer c = new Computer();
-
-        c.MakePlay(b, "");
     }
 }
 

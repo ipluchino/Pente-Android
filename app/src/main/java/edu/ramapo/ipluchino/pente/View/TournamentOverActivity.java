@@ -1,29 +1,16 @@
 package edu.ramapo.ipluchino.pente.View;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-
-import edu.ramapo.ipluchino.pente.Model.Round;
 import edu.ramapo.ipluchino.pente.R;
 
 public class TournamentOverActivity extends AppCompatActivity {
-    //Private members
+    //Private variables.
     private Intent m_intent;
     private int m_humanScore;
     private int m_computerScore;
@@ -34,6 +21,10 @@ public class TournamentOverActivity extends AppCompatActivity {
     private ImageView m_sadFace;
     private ImageView m_shrug;
 
+    /**
+     Creates the TournamentOverActivity and sets the layout, along with the event handlers.
+     @param savedInstanceState A Bundle object, that is used when the activity is being restored from a previous state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +41,8 @@ public class TournamentOverActivity extends AppCompatActivity {
         m_sadFace = findViewById(R.id.sadFaceImageView);
         m_shrug = findViewById(R.id.shrugImageView);
 
-        //Set onClick listeners.
+        //Set all of the onClickListeners for the buttons.
+        //Home button onClickListener.
         m_homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,14 +62,19 @@ public class TournamentOverActivity extends AppCompatActivity {
         {
             DisplayComputerWon();
         }
+        //The tournament ended in a draw.
         else
         {
             DisplayDraw();
         }
 
+        //Display the final scores of both players to the user.
         DisplayFinalScores();
     }
 
+    /**
+     Sets the display of the screen to represent that the human won the tournament.
+     */
     private void DisplayHumanWon()
     {
         //Edit the display to show that the human player won the tournament.
@@ -85,6 +82,9 @@ public class TournamentOverActivity extends AppCompatActivity {
         m_winnerTextView.setText("Winner: You!");
     }
 
+    /**
+     Sets the display of the screen to represent that the computer won the tournament.
+     */
     private void DisplayComputerWon()
     {
         //Edit the display to show that the computer player won the tournament.
@@ -92,6 +92,9 @@ public class TournamentOverActivity extends AppCompatActivity {
         m_winnerTextView.setText("Winner: Computer");
     }
 
+    /**
+     Sets the display of the screen to represent that the tournament ended in a draw.
+     */
     private void DisplayDraw()
     {
         //Edit the display to show that a draw occurred.
@@ -99,6 +102,9 @@ public class TournamentOverActivity extends AppCompatActivity {
         m_winnerTextView.setText("Winner: Draw");
     }
 
+    /**
+     Displays the final scores of both players in a TextView on the screen.
+     */
     private void DisplayFinalScores()
     {
         //Display the final scores to the user.

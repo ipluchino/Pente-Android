@@ -9,34 +9,28 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-import org.w3c.dom.Text;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
-
 import edu.ramapo.ipluchino.pente.Model.Round;
-
 import edu.ramapo.ipluchino.pente.R;
 
 public class RoundViewActivity extends AppCompatActivity {
+    //Constants.
     private final int WRITE_PERMISSION = 200;
+    private final int BOARD_SIZE = 19;
 
+    //Private variables.
     private Intent m_intent;
     private Round m_round;
     private GridLayout m_buttonGridLayout;
@@ -58,6 +52,10 @@ public class RoundViewActivity extends AppCompatActivity {
     private Vector<String> m_logData;
     private int m_logCounter = 0;
 
+    /**
+     Creates the RoundViewActivity and sets the layout, along with the event handlers.
+     @param savedInstanceState A Bundle object, that is used when the activity is being restored from a previous state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +85,8 @@ public class RoundViewActivity extends AppCompatActivity {
         //Initialize the board
         InitializeBoard();
 
-        //SET LISTENERS HERE.
+        //Set all of the onClickListeners for the buttons.
+        //Place Stone button for the human player onClickListener.
         m_placeStoneButtonHuman.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -154,6 +153,7 @@ public class RoundViewActivity extends AppCompatActivity {
             }
         });
 
+        //Place Stone button for the computer player onClickListener.
         m_placeStoneButtonComputer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,6 +179,7 @@ public class RoundViewActivity extends AppCompatActivity {
             }
         });
 
+        //Get Help button onClickListener.
         m_getHelpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -212,6 +213,7 @@ public class RoundViewActivity extends AppCompatActivity {
             }
         });
 
+        //Save & Exit button for the human player onClickListener.
         m_saveAndExitButtonHuman.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -219,6 +221,7 @@ public class RoundViewActivity extends AppCompatActivity {
             }
         });
 
+        //Save & Exit button for the computer player onClickListener.
         m_saveAndExitButtonComputer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -226,6 +229,7 @@ public class RoundViewActivity extends AppCompatActivity {
             }
         });
 
+        //Play Another Round button onCLickListener.
         m_playAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -236,6 +240,7 @@ public class RoundViewActivity extends AppCompatActivity {
             }
         });
 
+        //Finish Tournament button onClickListener.
         m_finishTournamentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -247,9 +252,10 @@ public class RoundViewActivity extends AppCompatActivity {
             }
         });
 
-        //https://stackoverflow.com/questions/50083803/how-to-make-a-alertdialog-list-scrollable-android
-        //https://stackoverflow.com/questions/51703725/scroll-view-not-working-in-alert-dialog
-        //https://stackoverflow.com/questions/14834685/android-alertdialog-setview-rules
+        //Log button onClickListener.
+        //Assistance Received: https://stackoverflow.com/questions/50083803/how-to-make-a-alertdialog-list-scrollable-android
+        //                     https://stackoverflow.com/questions/51703725/scroll-view-not-working-in-alert-dialog
+        //                     https://stackoverflow.com/questions/14834685/android-alertdialog-setview-rules
         m_logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -261,7 +267,7 @@ public class RoundViewActivity extends AppCompatActivity {
                 String allLogs = "";
                 for (String entry : m_logData)
                 {
-                    allLogs += entry + "\n\n";
+                    allLogs += (entry + "\n\n");
                 }
 
                 textView.setText(allLogs);
@@ -383,9 +389,12 @@ public class RoundViewActivity extends AppCompatActivity {
         UpdateRoundInformation();
     }
 
+    /**
+     Displays all of the components and widgets necessary when it is the Human player's turn, and removes the Computer's components.
+     */
     private void DisplayHumanComponents()
     {
-        EnableLocationButtons();
+        EnableBoardButtons();
 
         m_nextTurnTextView.setText("Next turn: Human - " + m_round.GetHumanColor());
 
@@ -397,9 +406,12 @@ public class RoundViewActivity extends AppCompatActivity {
         m_saveAndExitButtonComputer.setVisibility(View.GONE);
     }
 
+    /**
+     Displays all of the components and widgets necessary when it is the Computer player's turn, and removes the Human's components.
+     */
     private void DisplayComputerComponents()
     {
-        DisableLocationButtons();
+        DisableBoardButtons();
 
         m_nextTurnTextView.setText("Next turn: Computer - " + m_round.GetComputerColor());
 
@@ -411,16 +423,19 @@ public class RoundViewActivity extends AppCompatActivity {
         m_saveAndExitButtonHuman.setVisibility(View.GONE);
     }
 
+    /**
+     Initializes all of the board buttons dynamically, sets all of their attributes and event handlers, and puts them into a GridLayout.
+     */
     private void InitializeBoard()
     {
         //Create the column and row headers
         CreateHeaders();
 
         //Initialize the individual buttons
-        for(int i = 0; i < 19; i++)
+        for(int i = 0; i < BOARD_SIZE; i++)
         {
             Vector<Button> rowOfButtons = new Vector<Button>();
-            for(int j = 0; j < 19; j++)
+            for(int j = 0; j < BOARD_SIZE; j++)
             {
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 Button button = new Button(this);
@@ -473,6 +488,9 @@ public class RoundViewActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     Dynamically creates all of the column and row headers for the board as TextViews, and adds them to the GridLayout.
+     */
     private void CreateHeaders()
     {
         //Generate the column headers.
@@ -523,15 +541,26 @@ public class RoundViewActivity extends AppCompatActivity {
 
     }
 
+    //https://stackoverflow.com/questions/8309354/formula-px-to-dp-dp-to-px-android
+    /**
+     Converts dp units to pixel units.
+     @param a_dpToConvert An integer, representing the dp value to convert into pixels.
+     @param a_context A Context object, used to determine the pixel density of the screen.
+     @return An integer, representing the equivalent number of pixels from the provided dp value.
+     */
     private int GenerateCellSize(int a_dpToConvert, Context a_context)
     {
         //Convert dp to its pixel representation.
-        float scale = a_context.getResources().getDisplayMetrics().density;
-        int pixelRepresentation = (int) (a_dpToConvert * scale + 0.5f);
+        float density = a_context.getResources().getDisplayMetrics().density;
+        int pixelRepresentation = (int) (a_dpToConvert * density + 0.5);
 
         return pixelRepresentation;
     }
 
+    /**
+     Gets the row of the currently selected highlighted button on the board.
+     @return An integer, representing the row of the highlighted button.
+     */
     private String GetHighlightedButtonRow()
     {
         int rowTag = (int) m_highlightedButton.getTag(R.id.row);
@@ -540,6 +569,10 @@ public class RoundViewActivity extends AppCompatActivity {
         return boardRow;
     }
 
+    /**
+     Gets the column of the currently selected highlighted button on the board.
+     @return An integer, representing the column of the highlighted button.
+     */
     private String GetHighlightedButtonColumn()
     {
         int columnTag = (int) m_highlightedButton.getTag(R.id.column);
@@ -548,6 +581,9 @@ public class RoundViewActivity extends AppCompatActivity {
         return boardColumn;
     }
 
+    /**
+     Updates all of the round information on the screen to match what is described by the Round model.
+     */
     private void UpdateRoundInformation()
     {
         //Update the human's round information.
@@ -564,7 +600,7 @@ public class RoundViewActivity extends AppCompatActivity {
         String updatedComputerInformation = "Tournament Score: " + computerScore + "\n" + "Captured Pairs: " + computerCapturedPairs;
         m_computerInformationTextView.setText(updatedComputerInformation);
 
-        //Update all the images on the button to make sure they are correct.
+        //Update all the backgrounds of the board buttons to make sure they are correct.
         for (int i = 0; i < 19; i++)
         {
             for (int j = 0; j < 19; j++)
@@ -594,7 +630,10 @@ public class RoundViewActivity extends AppCompatActivity {
         }
     }
 
-    private void EnableLocationButtons()
+    /**
+     Enables all of the board buttons that do not already have a stone placed on them - used for the Human's turn.
+     */
+    private void EnableBoardButtons()
     {
         for (Vector<Button> row : m_locationButtons)
         {
@@ -614,7 +653,10 @@ public class RoundViewActivity extends AppCompatActivity {
         }
     }
 
-    private void DisableLocationButtons()
+    /**
+     Disables all of the board buttons - used for the Computer's turn.
+     */
+    private void DisableBoardButtons()
     {
         for (Vector<Button> row : m_locationButtons)
         {
@@ -626,6 +668,11 @@ public class RoundViewActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     Converts a location from its board representation to its numerical representation.
+     @param a_location A string, representing a location on the board.
+     @return A vector of Integers containing the numerical row and column of the location.
+     */
     private Vector<Integer> ConvertLocation(String a_location)
     {
         Vector<Integer> location = new Vector<Integer>();
@@ -642,6 +689,9 @@ public class RoundViewActivity extends AppCompatActivity {
         return location;
     }
 
+    /**
+     Displays all of the necessary components and widgets when a round has concluded.
+     */
     private void RoundCompleted()
     {
         //Explain to the user that the round has ended through a pop-up.
@@ -691,6 +741,9 @@ public class RoundViewActivity extends AppCompatActivity {
     }
 
     //https://stackoverflow.com/questions/10903754/input-text-dialog-android
+    /**
+     Asks the user for a file name, and saves the Pente tournament to a text file.
+     */
     private void SaveTournament()
     {
         //Request the permission to write to external storage, if the user has not already granted it.
@@ -757,6 +810,11 @@ public class RoundViewActivity extends AppCompatActivity {
         builder.show();
     }
 
+    /**
+     Determines if a chosen file name has any invalid characters in it.
+     @param a_fileName A string, representing the name of the file the user wishes to save the Pente tournament to.
+     @return A boolean, whether or not the file name provided is invalid.
+     */
     private boolean InvalidFileName(String a_fileName)
     {
         String[] invalidCharacters = {"\\", "/", "?", "<", ">", ":", ";", "|", "\""};
@@ -772,6 +830,9 @@ public class RoundViewActivity extends AppCompatActivity {
         return false;
     }
 
+    /**
+     Displays an alert dialog that lets the user know the file name they provided was invalid.
+     */
     private void DisplayInvalidFileName()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(RoundViewActivity.this);
@@ -789,5 +850,4 @@ public class RoundViewActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
 }

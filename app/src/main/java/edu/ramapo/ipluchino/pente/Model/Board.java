@@ -140,6 +140,44 @@ public class Board implements Serializable {
     }
 
     /**
+     The main function of the Board class - used for testing purposes.
+     @param args An array of strings, representing command line arguments.
+     */
+    public static void main(String[] args)
+    {
+        Vector<Vector<Character>> testBoard = new Vector<Vector<Character>>() {
+            {
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', 'W', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', 'W', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', 'W', 'W', 'W', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', 'B', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+
+            }
+        };
+
+        Board b = new Board();
+        b.SetBoard(testBoard);
+        b.DisplayBoard();
+
+        System.out.println(b.ScoreBoard('W', 0));
+    }
+
+    /**
      Displays the board textually on to the screen.
      */
     public void DisplayBoard()
@@ -484,43 +522,5 @@ public class Board implements Serializable {
     public int ConvertRowIndex(int a_row)
     {
         return 19 - a_row;
-    }
-
-    /**
-     The main function of the Board class - used for testing purposes.
-     @param args An array of strings, representing command line arguments.
-     */
-    public static void main(String[] args)
-    {
-        Vector<Vector<Character>> testBoard = new Vector<Vector<Character>>() {
-            {
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', 'W', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', 'W', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', 'W', 'W', 'W', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', 'B', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-
-            }
-        };
-
-        Board b = new Board();
-        b.SetBoard(testBoard);
-        b.DisplayBoard();
-
-        System.out.println(b.ScoreBoard('W', 0));
     }
 }

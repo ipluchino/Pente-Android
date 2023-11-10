@@ -93,6 +93,75 @@ public class Player implements Serializable {
     }
 
     /**
+     The main function of the Player class - used for testing purposes.
+     @param args An array of strings, representing command line arguments.
+     */
+    public static void main(String[] args)
+    {
+        Vector<Vector<Character>> testBoard = new Vector<Vector<Character>>() {
+            {
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'B')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-', '-', 'B', '-', '-', '-', '-', 'W', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', 'B', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'W', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', 'W', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('B', '-', '-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', 'B', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'W', '-', 'B')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'B', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', 'B', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'B', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', 'B', 'B', 'B', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'B', 'B', 'W')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', 'B', '-', '-', '-', 'B', '-', '-', '-', 'B', '-', 'B', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', 'B', '-', '-', '-', '-', '-', 'W', '-', '-', 'W', 'W')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
+                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-', '-')));
+
+            }
+        };
+
+        Board b = new Board();
+        Player p = new Player();
+        b.SetBoard(testBoard);
+
+        Vector<Vector<Vector<Integer>>> testSequences = p.FindAllMoves(b, 3, 'B', 5);
+        Vector<Vector<Integer>> sequence = testSequences.get(0);
+
+        p.SetCapturedPairs(0);
+        StringBuilder win_reason = new StringBuilder();
+        Vector<Integer> winMove = p.MakeWinningMove(b, 'W', win_reason);
+
+        System.out.println();
+        System.out.println("Win Move: " + winMove);
+        System.out.println("Win reason:" + win_reason);
+
+        System.out.println();
+        Vector<Integer> preventWinMove = p.PreventWinningMove(b, 'W');
+        System.out.println("Prevent Win Move: " + preventWinMove);
+        System.out.println();
+
+        System.out.println("Danger at (2, 11): " + p.InDangerOfCapture(b, new Vector<Integer>(Arrays.asList(2, 11)), 'B'));
+        System.out.println();
+
+        System.out.println("Flank: " + p.FindFlanks(b, 'W'));
+        System.out.println();
+
+        System.out.println("Deadly Tessera: " + p.FindDeadlyTessera(b, 'B', 'B'));
+        System.out.println();
+
+        Board anotherBoard = new Board();
+        anotherBoard.PlaceStone('J', 10, 'W');
+        anotherBoard.PlaceStone('J', 12, 'B');
+
+        anotherBoard.DisplayBoard();
+        System.out.println("Handicap play: " + p.FindHandicapPlay(anotherBoard));
+        System.out.println();
+    }
+
+    /**
      Virtual function that is redefined in the Human and Computer class. This function does nothing.
      @param a_board A Board object, representing the current board of the round.
      @param a_location A string, representing the location the player would like to place their stone.
@@ -1007,75 +1076,6 @@ public class Player implements Serializable {
         //Shuffle the possible play locations so that the computer plays in different directions in different games when it is playing on the handicap turn.
         Collections.shuffle(playLocations);
         return playLocations.get(0);
-    }
-
-    /**
-     The main function of the Player class - used for testing purposes.
-     @param args An array of strings, representing command line arguments.
-     */
-    public static void main(String[] args)
-    {
-        Vector<Vector<Character>> testBoard = new Vector<Vector<Character>>() {
-            {
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'B')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-', '-', 'B', '-', '-', '-', '-', 'W', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', 'B', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'W', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', 'W', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('B', '-', '-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', 'B', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', 'W', '-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'W', '-', 'B')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', 'W', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'B', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', 'B', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'B', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', 'B', 'B', 'B', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'B', 'B', 'W')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', 'B', '-', '-', '-', 'B', '-', '-', '-', 'B', '-', 'B', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', 'B', '-', '-', '-', '-', '-', 'W', '-', '-', 'W', 'W')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-', '-', '-')));
-                add(new Vector<Character>(Arrays.asList('-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'B', '-', '-', '-', '-', '-', '-', '-', '-')));
-
-            }
-        };
-
-        Board b = new Board();
-        Player p = new Player();
-        b.SetBoard(testBoard);
-
-        Vector<Vector<Vector<Integer>>> testSequences = p.FindAllMoves(b, 3, 'B', 5);
-        Vector<Vector<Integer>> sequence = testSequences.get(0);
-
-        p.SetCapturedPairs(0);
-        StringBuilder win_reason = new StringBuilder();
-        Vector<Integer> winMove = p.MakeWinningMove(b, 'W', win_reason);
-
-        System.out.println();
-        System.out.println("Win Move: " + winMove);
-        System.out.println("Win reason:" + win_reason);
-
-        System.out.println();
-        Vector<Integer> preventWinMove = p.PreventWinningMove(b, 'W');
-        System.out.println("Prevent Win Move: " + preventWinMove);
-        System.out.println();
-
-        System.out.println("Danger at (2, 11): " + p.InDangerOfCapture(b, new Vector<Integer>(Arrays.asList(2, 11)), 'B'));
-        System.out.println();
-
-        System.out.println("Flank: " + p.FindFlanks(b, 'W'));
-        System.out.println();
-
-        System.out.println("Deadly Tessera: " + p.FindDeadlyTessera(b, 'B', 'B'));
-        System.out.println();
-
-        Board anotherBoard = new Board();
-        anotherBoard.PlaceStone('J', 10, 'W');
-        anotherBoard.PlaceStone('J', 12, 'B');
-
-        anotherBoard.DisplayBoard();
-        System.out.println("Handicap play: " + p.FindHandicapPlay(anotherBoard));
-        System.out.println();
     }
 }
 

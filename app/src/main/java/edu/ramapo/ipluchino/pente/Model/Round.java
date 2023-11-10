@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.util.Random;
 import java.util.Vector;
 import java.io.FileWriter;
 
@@ -200,6 +199,19 @@ public class Round implements Serializable {
     public boolean SetComputerCapturedPairs(int a_capturedPairs)
     {
         return m_playerList.get(1).SetCapturedPairs(a_capturedPairs);
+    }
+
+    /**
+     The main function of the Round class - used for testing purposes.
+     @param args An array of strings, representing command line arguments.
+     */
+    public static void main(String[] args)
+    {
+        Round r = new Round();
+        r.SetComputerScore(1);
+        r.DetermineFirstPlayerViaScore();
+
+        r.DisplayGame();
     }
 
     /**
@@ -679,19 +691,6 @@ public class Round implements Serializable {
     public boolean IsHumanTurn()
     {
         return m_nextPlayerIndex == 0;
-    }
-
-    /**
-     The main function of the Round class - used for testing purposes.
-     @param args An array of strings, representing command line arguments.
-     */
-    public static void main(String[] args)
-    {
-        Round r = new Round();
-        r.SetComputerScore(1);
-        r.DetermineFirstPlayerViaScore();
-
-        r.DisplayGame();
     }
 }
 
