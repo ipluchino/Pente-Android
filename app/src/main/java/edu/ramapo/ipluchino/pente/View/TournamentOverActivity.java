@@ -79,7 +79,7 @@ public class TournamentOverActivity extends AppCompatActivity {
     {
         //Edit the display to show that the human player won the tournament.
         m_thumbsUp.setVisibility(View.VISIBLE);
-        m_winnerTextView.setText("Winner: You!");
+        m_winnerTextView.setText(getString(R.string.winner_human));
     }
 
     /**
@@ -89,7 +89,7 @@ public class TournamentOverActivity extends AppCompatActivity {
     {
         //Edit the display to show that the computer player won the tournament.
         m_sadFace.setVisibility(View.VISIBLE);
-        m_winnerTextView.setText("Winner: Computer");
+        m_winnerTextView.setText(getString(R.string.winner_computer));
     }
 
     /**
@@ -99,7 +99,7 @@ public class TournamentOverActivity extends AppCompatActivity {
     {
         //Edit the display to show that a draw occurred.
         m_shrug.setVisibility(View.VISIBLE);
-        m_winnerTextView.setText("Winner: Draw");
+        m_winnerTextView.setText(getString(R.string.winner_draw));
     }
 
     /**

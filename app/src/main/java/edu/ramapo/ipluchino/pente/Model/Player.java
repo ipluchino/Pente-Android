@@ -197,12 +197,12 @@ public class Player implements Serializable {
         return StrategyConstants.DIRECTION_NAMES.get(a_directionIndex);
     }
 
-    //https://www.educative.io/answers/how-to-generate-random-numbers-in-java
     /**
      To determine the most optimal location for a player to place their stone.
      @param a_board A Board object, representing the current board of the round.
      @param a_color A character, representing the player's stone color.
      @return A Vector of strings containing the location of the most optimal play, as well as the reasoning on why this is the most optimal play.
+     Assistance Received: https://www.educative.io/answers/how-to-generate-random-numbers-in-java
      */
     public Vector<String> OptimalPlay(Board a_board, char a_color)
     {
@@ -356,12 +356,12 @@ public class Player implements Serializable {
         return new Vector<String>(Arrays.asList(location, reasoning));
     }
 
-    //https://stackoverflow.com/questions/33088677/sort-list-of-objects-using-collection-sort-with-lambdas-only
     /**
      Finds a location on the board that results in the most captures possible, if any exist.
      @param a_board A Board object, representing the current board of the round.
      @param a_color A character, representing the player's stone color.
      @return A Vector of integers containing the row and column of the best possible location that results in the most captures.
+     Assistance Received: https://stackoverflow.com/questions/33088677/sort-list-of-objects-using-collection-sort-with-lambdas-only
      */
     public Vector<Integer> MakeCapture(Board a_board, char a_color)
     {
@@ -605,7 +605,6 @@ public class Player implements Serializable {
         return beforeTotal + afterTotal + 1;
     }
 
-    //https://www.geeksforgeeks.org/java-program-to-shuffle-vector-elements/#
     /**
      Finds a location on the board that builds initiative for the player.
      @param a_board A Board object, representing the current board of the round.
@@ -613,6 +612,7 @@ public class Player implements Serializable {
      @param a_color A character, representing the player's stone color.
      @param a_dangerColor A character, representing the stone color to check if placing it at a location would put it at risk of being captured.
      @return A Vector of integers containing the row, column, and direction being built in of the best location to build initiative, if any exist.
+     Assistance Received: https://www.geeksforgeeks.org/java-program-to-shuffle-vector-elements/#
      */
     public Vector<Integer> BuildInitiative(Board a_board, int a_numPlaced, char a_color, char a_dangerColor)
     {
@@ -755,13 +755,13 @@ public class Player implements Serializable {
         return new Vector<Integer>();
     }
 
-    //https://docs.oracle.com/javase/8/docs/api/java/lang/StringBuilder.html --> StringBuilder because you can't pass a string by reference in Java.
     /**
      Find a location on the board that would cause the player to win the round.
      @param a_board A Board object, representing the current board of the round.
      @param a_color A character, representing the player's stone color.
      @param a_winReason A StringBuilder object, representing the reasoning of the win, or if the win is being delayed.
      @return A Vector of integers containing the row and column of the location that would result in the player winning the game.
+     Assistance Received: https://docs.oracle.com/javase/8/docs/api/java/lang/StringBuilder.html
      */
     public Vector<Integer> MakeWinningMove(Board a_board, char a_color, StringBuilder a_winReason)
     {

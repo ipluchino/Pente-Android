@@ -2,6 +2,12 @@
     <string name="app_name">Pente</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="title_activity_cointoss">CoinTossActivity</string>
+    <string name="next_turn_game_over">Next turn: Game over!</string>
+    <string name="winner_human">Winner: You!</string>
+    <string name="winner_computer">Winner: Computer</string>
+    <string name="winner_draw">Winner: Draw</string>
+    <string name="first_human">You will go first because you called the toss correctly!</string>
+    <string name="first_computer">The computer will go first because you called the toss incorrectly!</string>
     <item type="id" name="row" />
     <item type="id" name="column" />
     <item type="id" name="stonePlaced" />

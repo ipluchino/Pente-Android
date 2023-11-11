@@ -85,12 +85,12 @@ public class CoinTossActivity extends AppCompatActivity {
         });
     }
 
-    //https://developer.android.com/reference/android/transition/Fade
-    //https://stackoverflow.com/questions/43952275/transitionmanager-begindelayedtransition-doesnt-animate-scaling
-    //https://developer.android.com/develop/ui/views/animations/transitions
     /**
      Simulates a coin toss and sets the first player of the round based on the results of the coin toss.
      @param choice An integer, representing the Human player's call of the coin toss (0 for Heads, 1 for Tails).
+     Assistance Received: https://developer.android.com/reference/android/transition/Fade
+                          https://stackoverflow.com/questions/43952275/transitionmanager-begindelayedtransition-doesnt-animate-scaling
+                          https://developer.android.com/develop/ui/views/animations/transitions
      */
     private void CoinToss(int choice) {
         //Fade object to fade widgets in and out. The animation takes 1000 milliseconds or 1 second.
@@ -112,14 +112,14 @@ public class CoinTossActivity extends AppCompatActivity {
         //The human won the coin toss.
         if (coin == choice)
         {
-            m_resultTextView.setText("You will go first because you called the toss correctly!");
+            m_resultTextView.setText(getString(R.string.first_human));
             m_wonTextView.setVisibility(View.VISIBLE);
             m_currentRound.SetHumanFirst();
         }
         //The computer won the coin toss.
         else
         {
-            m_resultTextView.setText("The computer will go first because you called the toss incorrectly!");
+            m_resultTextView.setText(getString(R.string.first_computer));
             m_lostTextView.setVisibility(View.VISIBLE);
             m_currentRound.SetComputerFirst();
         }

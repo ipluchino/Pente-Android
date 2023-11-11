@@ -94,9 +94,9 @@ public class WelcomeActivity extends AppCompatActivity {
         });
     }
 
-    //https://stackoverflow.com/questions/9157887/android-how-to-use-spinner-in-an-alertdialog
     /**
      Displays an alert dialog explaining to the user that the file they chose to load the tournament from was invalid.
+     Assistance Received: https://stackoverflow.com/questions/9157887/android-how-to-use-spinner-in-an-alertdialog
      */
     private void DisplayInvalidFile()
     {
@@ -116,10 +116,10 @@ public class WelcomeActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    //https://stackoverflow.com/questions/9157887/android-how-to-use-spinner-in-an-alertdialog
     /**
      Displays all of the save files to load from as a spinner in an alert dialog, and allows the user to choose one.
      @param a_files A Vector of strings, representing all of the names of the save files found in the save directory.
+     Assistance Received: https://stackoverflow.com/questions/9157887/android-how-to-use-spinner-in-an-alertdialog
      */
     private void DisplaySavedFiles(Vector<String> a_files)
     {

@@ -541,12 +541,12 @@ public class RoundViewActivity extends AppCompatActivity {
 
     }
 
-    //https://stackoverflow.com/questions/8309354/formula-px-to-dp-dp-to-px-android
     /**
      Converts dp units to pixel units.
      @param a_dpToConvert An integer, representing the dp value to convert into pixels.
      @param a_context A Context object, used to determine the pixel density of the screen.
      @return An integer, representing the equivalent number of pixels from the provided dp value.
+     Assistance Received: https://stackoverflow.com/questions/8309354/formula-px-to-dp-dp-to-px-android
      */
     private int GenerateCellSize(int a_dpToConvert, Context a_context)
     {
@@ -717,7 +717,7 @@ public class RoundViewActivity extends AppCompatActivity {
         m_saveAndExitButtonHuman.setVisibility(View.GONE);
         m_placeStoneButtonComputer.setVisibility(View.GONE);
         m_saveAndExitButtonComputer.setVisibility(View.GONE);
-        m_nextTurnTextView.setText("Next turn: Game over!");
+        m_nextTurnTextView.setText(getString(R.string.next_turn_game_over));
         m_lastMoveTextView.setVisibility(View.GONE);
 
         //Obtain the scores earned by each player for the current round.
@@ -740,9 +740,9 @@ public class RoundViewActivity extends AppCompatActivity {
         m_finishTournamentButton.setVisibility(View.VISIBLE);
     }
 
-    //https://stackoverflow.com/questions/10903754/input-text-dialog-android
     /**
      Asks the user for a file name, and saves the Pente tournament to a text file.
+     Assistance Received: https://stackoverflow.com/questions/10903754/input-text-dialog-android
      */
     private void SaveTournament()
     {
