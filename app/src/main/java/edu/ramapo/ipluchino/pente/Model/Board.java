@@ -109,7 +109,7 @@ public class Board implements Serializable {
         a_row = ConvertRowIndex(a_row);
 
 
-        //Place the piece on the board.
+        //Place the stone on the board.
         m_board.get(a_row).set(numericColumn, a_stoneColor);
 
         return true;
@@ -234,11 +234,11 @@ public class Board implements Serializable {
      @param a_color A character, representing the color of stones to be counted.
      @return An integer, representing the total number of stones of that color on the board.
      */
-    public int CountPieces(char a_color)
+    public int CountStones(char a_color)
     {
         int total = 0;
 
-        //Loop through the entire board and count up the number of pieces that are the color passed.
+        //Loop through the entire board and count up the number of stones that are the color passed.
         for (int row = 0; row < StrategyConstants.BOARD_SIZE; row++)
         {
             for (int col = 0; col < StrategyConstants.BOARD_SIZE; col++)
@@ -259,7 +259,7 @@ public class Board implements Serializable {
      */
     public boolean IsEmptyBoard()
     {
-        return CountPieces('W') == 0 && CountPieces('B') == 0;
+        return CountStones('W') == 0 && CountStones('B') == 0;
     }
 
     /**
@@ -293,7 +293,7 @@ public class Board implements Serializable {
                 int newRow = convertedRow + (StrategyConstants.DIRECTIONS.get(direction).get(0) * distance);
                 int newCol = convertedColumn + (StrategyConstants.DIRECTIONS.get(direction).get(1) * distance);
 
-                //If the location is valid, it must be stored so the pieces there can be removed if it turns out to be a successful capture.
+                //If the location is valid, it must be stored so the stones there can be removed if it turns out to be a successful capture.
                 if (IsValidIndices(newRow, newCol)) newLocations.add(new Vector<Integer>(Arrays.asList(newRow, newCol)));
             }
 
@@ -307,7 +307,7 @@ public class Board implements Serializable {
                 {
                     numCaptures++;
 
-                    //Remove the two captured pieces from the board. The first and second row/col pairs of 'newLocations' are the two pieces being captured.
+                    //Remove the two captured stones from the board. The first and second row/col pairs of 'newLocations' are the two stones being captured.
                     //The column and row need to be converted to their board view representations when passed to the RemoveStone function.
                     RemoveStone(IntToCharacter(newLocations.get(0).get(1)), ConvertRowIndex(newLocations.get(0).get(0)));
                     RemoveStone(IntToCharacter(newLocations.get(1).get(1)), ConvertRowIndex(newLocations.get(1).get(0)));
@@ -340,7 +340,7 @@ public class Board implements Serializable {
      */
     public boolean IsBoardFull()
     {
-        //Loop through every piece on the board, and if one is empty the board is not full. Otherwise, it is.
+        //Loop through every stone on the board, and if one is empty the board is not full. Otherwise, it is.
         for (int row = 0; row < StrategyConstants.BOARD_SIZE; row++)
         {
             for (int col = 0; col < StrategyConstants.BOARD_SIZE; col++)
@@ -404,10 +404,10 @@ public class Board implements Serializable {
         for (int direction = 0; direction < StrategyConstants.NUM_DIRECTIONS; direction += StrategyConstants.DIRECTIONAL_OFFSET)
         {
             //The first step in scoring is the find all 5 or more consecutives in each horizontal, vertical, and diagonal.
-            //NOTE: There can be multiple 5 or more consecutives in an L shape if the last piece placed connects the L together.
+            //NOTE: There can be multiple 5 or more consecutives in an L shape if the last stone placed connects the L together.
             Vector<Vector<Character>> boardCopy = GetBoard();
 
-            //Loop through every piece and search the current direction for any consecutive 5 or more stones. This is considered a "winning move".
+            //Loop through every stone and search the current direction for any consecutive 5 or more stones. This is considered a "winning move".
             for (int row = 0; row < StrategyConstants.BOARD_SIZE; row++)
             {
                 for (int col = 0; col < StrategyConstants.BOARD_SIZE; col++)

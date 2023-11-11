@@ -221,7 +221,7 @@ public class Player implements Serializable {
         }
 
         //There is a handicap for the second turn of the first player. The play must be within three intersections of the center stone.
-        boolean handicap = a_board.CountPieces('W') == 1 && a_board.CountPieces('B') == 1;
+        boolean handicap = a_board.CountStones('W') == 1 && a_board.CountStones('B') == 1;
         if (handicap)
         {
             possiblePlay = FindHandicapPlay(a_board);
@@ -333,7 +333,7 @@ public class Player implements Serializable {
             return new Vector<String>(Arrays.asList(location, reasoning));
         }
 
-        //Attempt to counter initiative with stone piece already placed - used for the first move when going second.
+        //Attempt to counter initiative with 1 stone already placed - used for the first move when going second.
         possiblePlay = CounterInitiative(a_board, 1, a_color);
         if (!possiblePlay.isEmpty())
         {
@@ -376,7 +376,7 @@ public class Player implements Serializable {
             {
                 if (board.get(row).get(col) == '-')
                 {
-                    //If the space is empty, determine the number of captures that would occur if you were to place your piece here.
+                    //If the space is empty, determine the number of captures that would occur if you were to place your stone here.
                     int numCaptures = CanCaptureIfPlaced(a_board, a_color, row, col);
                     if (numCaptures > 0)
                     {
@@ -395,11 +395,11 @@ public class Player implements Serializable {
             return new Vector<Integer>();
         }
 
-        //If there are multiple possible capture locations, the one that captures the most pieces should be prioritized.
+        //If there are multiple possible capture locations, the one that captures the most stones should be prioritized.
         //To accomplish this, a lambda function is used to sort by capture number for each possible play.
         allPossibleCaptures.sort((a, b) -> (b.get(2)).compareTo(a.get(2)));
 
-        //Return the play that captures the most possible pieces in one play. Since the vector is sorted by capture number,
+        //Return the play that captures the most possible stones in one play. Since the vector is sorted by capture number,
         //the first play is considered the most optimized.
         return allPossibleCaptures.get(0);
 
@@ -437,7 +437,7 @@ public class Player implements Serializable {
             if (newLocations.size() == StrategyConstants.CAPTURE_DISTANCE)
             {
                 //A capture is possible if the three valid locations are in the pattern: * O O P where * represents an empty space,
-                //O is the opponent's pieces, and P is the player's piece.
+                //O is the opponent's stones, and P is the player's stone.
                 if (board.get(newLocations.get(0).get(0)).get(newLocations.get(0).get(1)) == opponentColor &&
                         board.get(newLocations.get(1).get(0)).get(newLocations.get(1).get(1)) == opponentColor &&
                         board.get(newLocations.get(2).get(0)).get(newLocations.get(2).get(1)) == a_color)
@@ -479,7 +479,7 @@ public class Player implements Serializable {
         //A copy of the board's data.
         Vector<Vector<Character>> board = a_board.GetBoard();
 
-        //Will hold all possible sets of consecutive a_distance locations that has a_numPlaced pieces of the specified color, and a_distance - a_numPlaced empty locations.
+        //Will hold all possible sets of consecutive a_distance locations that has a_numPlaced stones of the specified color, and a_distance - a_numPlaced empty locations.
         Vector<Vector<Vector<Integer>>> result = new Vector<Vector<Vector<Integer>>>();
 
         //The empty locations required to be valid is a_distance - a_numPlaced.
@@ -492,7 +492,7 @@ public class Player implements Serializable {
                 //Only need to search the main directions: horizontals, verticals, main diagonals, and anti-diagonals.
                 for (int direction = 0; direction < StrategyConstants.NUM_DIRECTIONS; direction += StrategyConstants.DIRECTIONAL_OFFSET)
                 {
-                    int pieceCounter = 0;
+                    int stoneCounter = 0;
                     int emptyCounter = 0;
 
                     Vector<Vector<Integer>> locations = new Vector<Vector<Integer>>();
@@ -507,7 +507,7 @@ public class Player implements Serializable {
 
                         if (board.get(newRow).get(newCol) == a_color)
                         {
-                            pieceCounter++;
+                            stoneCounter++;
                         }
                         else if (board.get(newRow).get(newCol) == '-')
                         {
@@ -517,8 +517,8 @@ public class Player implements Serializable {
                         locations.add(new Vector<Integer>(Arrays.asList(newRow, newCol, direction)));
                     }
 
-                    //If the number of pieces and empty locations satisfy their conditions, record this set of locations to the result vector.
-                    if (pieceCounter == a_numPlaced && emptyCounter == emptyRequired)
+                    //If the number of stones and empty locations satisfy their conditions, record this set of locations to the result vector.
+                    if (stoneCounter == a_numPlaced && emptyCounter == emptyRequired)
                     {
                         result.add(locations);
                     }
@@ -556,7 +556,7 @@ public class Player implements Serializable {
     }
 
     /**
-     Finds the number of consecutive pieces that would be placed on the board given a set of locations and an index to place the stone.
+     Finds the number of consecutive stones that would be placed on the board given a set of locations and an index to place the stone.
      @param a_board A Board object, representing the current board of the round.
      @param a_locations A 2-D Vector of integers, representing a set of locations on the board.
      @param a_emptyIndex An integer, representing the index in a_locations that is empty on the board.
@@ -569,7 +569,7 @@ public class Player implements Serializable {
         int beforeTotal = 0;
         int afterTotal = 0;
 
-        //Find the number of consecutive pieces before emptyIndex in a_locations.
+        //Find the number of consecutive stones before emptyIndex in a_locations.
         int index = a_emptyIndex;
         while (--index >= 0)
         {
@@ -585,7 +585,7 @@ public class Player implements Serializable {
             }
         }
 
-        //Find the number of consecutive pieces after emptyIndex in a_locations.
+        //Find the number of consecutive stones after emptyIndex in a_locations.
         index = a_emptyIndex;
         while (++index < a_locations.size())
         {
@@ -601,7 +601,7 @@ public class Player implements Serializable {
             }
         }
 
-        //The number of consecutive pieces if placed in the emptyIndex is the number of consecutive pieces before it, plus the number of pieces after it, plus itself.
+        //The number of consecutive stones if placed in the emptyIndex is the number of consecutive stones before it, plus the number of stones after it, plus itself.
         return beforeTotal + afterTotal + 1;
     }
 
@@ -635,11 +635,11 @@ public class Player implements Serializable {
                 int lastRow = possibleMoves.get(i).get(4).get(0);
                 int lastCol = possibleMoves.get(i).get(4).get(1);
 
-                //Find the possible set of 5 where the piece found one of the ends to make it easier to find the middle. Ex: W - - - - OR - - - - W
+                //Find the possible set of 5 where the stone found one of the ends to make it easier to find the middle. Ex: W - - - - OR - - - - W
                 if ((board.get(firstRow).get(firstCol) != '-' || board.get(lastRow).get(lastCol) != '-') && !InDangerOfCapture(a_board, possibleMoves.get(i).get(2), a_dangerColor))
                 {
                     //possibleMoves[i][2] represents the middle of the set of 5 locations. Ex: W - * - - where * represents the middle.
-                    //This ensures the new pieces is placed one away from the placed piece and not at risk of capture.
+                    //This ensures the new stones is placed one away from the placed stone and not at risk of capture.
                     playLocations.add(possibleMoves.get(i).get(2));
                 }
             }
@@ -665,7 +665,7 @@ public class Player implements Serializable {
                 return possibleThreeConsecutive;
             }
 
-            //If you can't make a 3 in a row, prefer to place the piece with the least neighbors to avoid being captured. Ex: W - * - W
+            //If you can't make a 3 in a row, prefer to place the stone with the least neighbors to avoid being captured. Ex: W - * - W
             int leastConsecutive = Integer.MAX_VALUE;
             int leastIndex = Integer.MAX_VALUE;
             int locationIndex = -1;
@@ -765,7 +765,7 @@ public class Player implements Serializable {
      */
     public Vector<Integer> MakeWinningMove(Board a_board, char a_color, StringBuilder a_winReason)
     {
-        //First check if there are any moves that allow for five consecutive pieces.
+        //First check if there are any moves that allow for five consecutive stones.
         Vector<Vector<Vector<Integer>>> possibleMoves = FindAllMoves(a_board, 4, a_color, StrategyConstants.CONSECUTIVE_5_DISTANCE);
 
         if (possibleMoves.size() > 1)
@@ -791,11 +791,11 @@ public class Player implements Serializable {
 
         if (!possibleMoves.isEmpty())
         {
-            //If there's only one possible move that creates five consecutive pieces, make it and win the round.
+            //If there's only one possible move that creates five consecutive stones, make it and win the round.
             Vector<Integer> emptyIndices = FindEmptyIndices(a_board, possibleMoves.get(0));
 
             //Note: The vector containing the empty location is in the format {row, col, directionIndex},
-            a_winReason.append(" to make five consecutive piece in the ").append(GetDirection(possibleMoves.get(0).get(emptyIndices.get(0)).get(2))).append(" direction and win the round.");
+            a_winReason.append(" to make five consecutive stones in the ").append(GetDirection(possibleMoves.get(0).get(emptyIndices.get(0)).get(2))).append(" direction and win the round.");
             return possibleMoves.get(0).get(emptyIndices.get(0));
         }
 
@@ -809,7 +809,7 @@ public class Player implements Serializable {
 
             if (numCaptures + m_capturedPairs >= 5)
             {
-                a_winReason.append(" to capture the opponent's pieces and have at least five captured pairs to win the round.");
+                a_winReason.append(" to capture the opponent's stones and have at least five captured pairs to win the round.");
                 return potentialCaptures;
             }
         }
@@ -858,7 +858,7 @@ public class Player implements Serializable {
 
         char opponentColor = a_board.OpponentColor(a_color);
 
-        //To determine if playing a piece will put the player at risk of being captured, locations will need to be checked in opposite directions.
+        //To determine if playing a stone will put the player at risk of being captured, locations will need to be checked in opposite directions.
         Vector<Integer> currentDirection;
         Vector<Integer> oppositeDirection;
         for (int direction = 0; direction < StrategyConstants.NUM_DIRECTIONS; direction++)
@@ -868,7 +868,7 @@ public class Player implements Serializable {
             oppositeDirection = new Vector<Integer>(Arrays.asList(StrategyConstants.DIRECTIONS.get(direction).get(0) * -1, StrategyConstants.DIRECTIONS.get(direction).get(1) * -1));
 
             //To be in danger of being captured there must be this pattern: - * P O OR this pattern: - P * O
-            // - is an empty space, * is the current location being evaluated, P is the current players piece, and O is the opponents piece.
+            // - is an empty space, * is the current location being evaluated, P is the current players stone, and O is the opponents stone.
 
             //The row, col pair that is a distance of one away in the opposite direction being evaluated.
             int oppositeDirRow = row + oppositeDirection.get(0);
@@ -937,7 +937,7 @@ public class Player implements Serializable {
     }
 
     /**
-     Finds a location on the board that would create a deadly tessera (four consecutive pieces with an empty location on either side).
+     Finds a location on the board that would create a deadly tessera (four consecutive stones with an empty location on either side).
      @param a_board A Board object, representing the current board of the round.
      @param a_color A character, representing the stone color to search for deadly tesseras.
      @param a_dangerColor A character, representing the stone color to check if it is in danger of being captured.
@@ -945,7 +945,7 @@ public class Player implements Serializable {
      */
     public Vector<Integer> FindDeadlyTessera(Board a_board, char a_color, char a_dangerColor)
     {
-        //Search for all valid consecutive 6 locations that have 3 of the specified piece color and 3 empty locations.
+        //Search for all valid consecutive 6 locations that have 3 of the specified stone color and 3 empty locations.
         //Deadly tesseras are in the form: - B B * B - , where both ends of the set of six are empty.
         Vector<Vector<Vector<Integer>>> possibleMoves = FindAllMoves(a_board, 3, a_color, 6);
 
@@ -985,7 +985,7 @@ public class Player implements Serializable {
     }
 
     /**
-     Finds a location on the board that would create three consecutive pieces, if any are possible, given multiple sets of possible locations to build on.
+     Finds a location on the board that would create three consecutive stones, if any are possible, given multiple sets of possible locations to build on.
      @param a_board A Board object, representing the current board of the round.
      @param a_possibleMoves A 3-D Vector of integers, representing sequences of five locations on the board.
      @param a_dangerColor A character, representing the stone color to check if it is in danger of being captured.
@@ -1012,7 +1012,7 @@ public class Player implements Serializable {
     }
 
     /**
-     Finds a location on the board that would create four consecutive pieces, if any are possible, given multiple sets of possible locations to build on.
+     Finds a location on the board that would create four consecutive stones, if any are possible, given multiple sets of possible locations to build on.
      @param a_board A Board object, representing the current board of the round.
      @param a_possibleMoves A 3-D Vector of integers, representing sequences of five locations on the board.
      @param a_dangerColor A character, representing the stone color to check if it is in danger of being captured.

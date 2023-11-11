@@ -303,7 +303,7 @@ public class Round implements Serializable {
      */
     public String RoundOver()
     {
-        //If one of the players has achieved five consecutive pieces in any direction, the round is over.
+        //If one of the players has achieved five consecutive stones in any direction, the round is over.
         if (m_board.FiveConsecutive('W'))
         {
             if (GetHumanColor() == 'W')
@@ -637,8 +637,8 @@ public class Round implements Serializable {
      */
     public String ValidMove(String a_location)
     {
-        //There is a handicap for the second turn of the first player. The play must be within three intersections of the center piece.
-        boolean handicap = m_board.CountPieces('W') == 1 && m_board.CountPieces('B') == 1;
+        //There is a handicap for the second turn of the first player. The play must be within three intersections of the center stone.
+        boolean handicap = m_board.CountStones('W') == 1 && m_board.CountStones('B') == 1;
 
         if (m_board.IsEmptyBoard() && !a_location.equals("J10"))
         {
