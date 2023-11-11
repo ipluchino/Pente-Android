@@ -22,7 +22,8 @@
         <activity
             android:name=".View.WelcomeActivity"
             android:exported="true"
-            android:theme="@style/Theme.Pente">
+            android:theme="@style/Theme.Pente"
+            android:screenOrientation="portrait">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -34,19 +35,22 @@
         <activity
             android:name=".View.CoinTossActivity"
             android:exported="true"
-            android:theme="@style/Theme.Pente">
+            android:theme="@style/Theme.Pente"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name=".View.RoundViewActivity"
             android:exported="true"
-            android:theme="@style/Theme.Pente">
+            android:theme="@style/Theme.Pente"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name=".View.TournamentOverActivity"
             android:exported="true"
-            android:theme="@style/Theme.Pente">
+            android:theme="@style/Theme.Pente"
+            android:screenOrientation="portrait">
         </activity>
 
     </application>
