@@ -308,32 +308,32 @@ public class Round implements Serializable {
         {
             if (GetHumanColor() == 'W')
             {
-                return "The round has ended because the Human player has five consecutive stones on the board.";
+                return "The round has ended because the human player has five consecutive stones on the board.";
             }
             else
             {
-                return "The round has ended because the Computer player has five consecutive stones on the board.";
+                return "The round has ended because the computer player has five consecutive stones on the board.";
             }
         }
         else if (m_board.FiveConsecutive('B'))
         {
             if (GetHumanColor() == 'B')
             {
-                return "The round has ended because the Human player has five consecutive stones on the board.";
+                return "The round has ended because the human player has five consecutive stones on the board.";
             }
             else
             {
-                return "The round has ended because the Computer player has five consecutive stones on the board.";
+                return "The round has ended because the computer player has five consecutive stones on the board.";
             }
         }
         //If one of the players has achieved at least 5 captured pairs, the round is over.
         else if (GetHumanCapturedPairs() >= 5)
         {
-            return "The round has ended because the Human player has at least 5 captured pairs.";
+            return "The round has ended because the human player has at least 5 captured pairs.";
         }
         else if (GetComputerCapturedPairs() >= 5)
         {
-            return "The round has ended because the Computer player has at least 5 captured pairs.";
+            return "The round has ended because the computer player has at least 5 captured pairs.";
         }
         //If none of the above situations occurred but the board is full, the round is over.
         else if (m_board.IsBoardFull())

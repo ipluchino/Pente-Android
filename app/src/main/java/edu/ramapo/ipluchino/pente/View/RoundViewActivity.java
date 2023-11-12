@@ -49,6 +49,8 @@ public class RoundViewActivity extends AppCompatActivity {
     private TextView m_computerInformationTextView;
     private TextView m_scoringTextView;
     private TextView m_lastMoveTextView;
+    private TextView m_humanLabel;
+    private TextView m_computerLabel;
     private Vector<String> m_logData;
     private int m_logCounter = 0;
 
@@ -78,6 +80,8 @@ public class RoundViewActivity extends AppCompatActivity {
         m_nextTurnTextView = findViewById(R.id.nextTurnTextView);
         m_humanInformationTextView = findViewById(R.id.humanInformationTextView);
         m_computerInformationTextView = findViewById(R.id.computerInformationTextView);
+        m_humanLabel = findViewById(R.id.humanLabelTextView);
+        m_computerLabel = findViewById(R.id.computerLabelTextView);
         m_scoringTextView = findViewById(R.id.scoringTextView);
         m_lastMoveTextView = findViewById(R.id.lastMoveTextView);
         m_logData = new Vector<String>();
@@ -587,6 +591,7 @@ public class RoundViewActivity extends AppCompatActivity {
     private void UpdateRoundInformation()
     {
         //Update the human's round information.
+        m_humanLabel.setText("Human - " + m_round.GetHumanColor());
         int humanScore = m_round.GetHumanScore();
         int humanCapturedPairs = m_round.GetHumanCapturedPairs();
 
@@ -594,6 +599,7 @@ public class RoundViewActivity extends AppCompatActivity {
         m_humanInformationTextView.setText(updatedHumanInformation);
 
         //Update the computer's round information.
+        m_computerLabel.setText("Computer - " + m_round.GetComputerColor());
         int computerScore = m_round.GetComputerScore();
         int computerCapturedPairs = m_round.GetComputerCapturedPairs();
 

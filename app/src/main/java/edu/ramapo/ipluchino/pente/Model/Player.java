@@ -226,7 +226,7 @@ public class Player implements Serializable {
         {
             possiblePlay = FindHandicapPlay(a_board);
             location = ExtractLocation(possiblePlay.get(0), possiblePlay.get(1), a_board);
-            reasoning += location + " to counter the opponent's initiative and start building initiative. The location must be at least three intersections away from the center (J10).";
+            reasoning += location + " to start building initiative. The location must be at least three intersections away from the center (J10).";
             return new Vector<String>(Arrays.asList(location, reasoning));
         }
 
@@ -264,7 +264,7 @@ public class Player implements Serializable {
         if (!possiblePlay.isEmpty())
         {
             location = ExtractLocation(possiblePlay.get(0), possiblePlay.get(1), a_board);
-            reasoning += location + " to block deadly tessera from forming in the " + GetDirection(possiblePlay.get(2)) + " direction.";
+            reasoning += location + " to block a deadly tessera from forming in the " + GetDirection(possiblePlay.get(2)) + " direction.";
 
             return new Vector<String>(Arrays.asList(location, reasoning));
         }
