@@ -1,3 +1,12 @@
+/**
+ **************************************************************
+ * Name: Ian Pluchino                                         *
+ * Project: OPL Project 3 Java/Android                        *
+ * Class: StrategyConstants class                             *
+ * Date: 11/15/23                                             *
+ **************************************************************
+ */
+
 package edu.ramapo.ipluchino.pente.Model;
 
 import java.io.Serializable;
@@ -35,15 +44,15 @@ public class StrategyConstants implements Serializable {
     public static final int CAPTURE_DISTANCE = 3;
 
     // Represents the increment required to skip over opposite directions.
-    // Ex: When searching horizontals, left & right directions searches would be the same.
+    // Ex: When searching horizontals, left & right direction searches would be the same.
     public static final int DIRECTIONAL_OFFSET = 2;
 
-    // Represents the total number of spaces required to make three consecutive pieces.
+    // Represents the total number of spaces required to make three consecutive stones.
     public static final int CONSECUTIVE_3_DISTANCE = 3;
 
-    // Represents the total number of spaces required to make four consecutive pieces.
+    // Represents the total number of spaces required to make four consecutive stones.
     public static final int CONSECUTIVE_4_DISTANCE = 4;
 
-    // Represents the total number of spaces required to make five consecutive pieces.
+    // Represents the total number of spaces required to make five consecutive stones.
     public static final int CONSECUTIVE_5_DISTANCE = 5;
 }

@@ -1,3 +1,12 @@
+/**
+ **************************************************************
+ * Name: Ian Pluchino                                         *
+ * Project: OPL Project 3 Java/Android                        *
+ * Class: Computer class                                      *
+ * Date: 11/15/23                                             *
+ **************************************************************
+ */
+
 package edu.ramapo.ipluchino.pente.Model;
 
 import java.util.Vector;

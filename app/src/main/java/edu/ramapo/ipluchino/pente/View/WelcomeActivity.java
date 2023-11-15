@@ -1,3 +1,12 @@
+/**
+ **************************************************************
+ * Name: Ian Pluchino                                         *
+ * Project: OPL Project 3 Java/Android                        *
+ * Class: WelcomeActivity class                               *
+ * Date: 11/15/23                                             *
+ **************************************************************
+ */
+
 package edu.ramapo.ipluchino.pente.View;
 
 import android.Manifest;

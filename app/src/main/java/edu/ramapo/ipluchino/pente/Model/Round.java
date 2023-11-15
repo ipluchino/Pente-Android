@@ -1,3 +1,12 @@
+/**
+ **************************************************************
+ * Name: Ian Pluchino                                         *
+ * Project: OPL Project 3 Java/Android                        *
+ * Class: Round class                                         *
+ * Date: 11/15/23                                             *
+ **************************************************************
+ */
+
 package edu.ramapo.ipluchino.pente.Model;
 
 import java.io.BufferedReader;
@@ -646,7 +655,7 @@ public class Round implements Serializable {
         }
         else if (handicap && ((a_location.charAt(0) > 'G' && a_location.charAt(0) < 'M') && Integer.parseInt(a_location.substring(1)) > 7 && Integer.parseInt(a_location.substring(1)) < 13))
         {
-            return "The location must be at least three intersections away from the center (J10) on this turn!";
+            return "The location must be at least three spaces away from the center (J10) on this turn!";
         }
 
         //If the location is valid, return an empty string.

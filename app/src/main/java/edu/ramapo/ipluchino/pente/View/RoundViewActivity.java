@@ -1,3 +1,12 @@
+/**
+ **************************************************************
+ * Name: Ian Pluchino                                         *
+ * Project: OPL Project 3 Java/Android                        *
+ * Class: RoundViewActivity class                             *
+ * Date: 11/15/23                                             *
+ **************************************************************
+ */
+
 package edu.ramapo.ipluchino.pente.View;
 
 import android.Manifest;
@@ -194,6 +203,10 @@ public class RoundViewActivity extends AppCompatActivity {
                 Vector<String> help = m_round.GetHelp();
                 Vector<Integer> helpLocation = ConvertLocation(help.get(0));
                 String helpMsg = help.get(1);
+
+                //Add the help to the log.
+                m_logCounter++;
+                m_logData.add(Integer.toString(m_logCounter) + ". The human asked for help: " + helpMsg);
 
                 builder.setMessage(helpMsg);
 

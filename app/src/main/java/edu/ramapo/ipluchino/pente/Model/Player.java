@@ -1,3 +1,12 @@
+/**
+ **************************************************************
+ * Name: Ian Pluchino                                         *
+ * Project: OPL Project 3 Java/Android                        *
+ * Class: Player class                                        *
+ * Date: 11/15/23                                             *
+ **************************************************************
+ */
+
 package edu.ramapo.ipluchino.pente.Model;
 
 import java.io.Serializable;
@@ -226,7 +235,7 @@ public class Player implements Serializable {
         {
             possiblePlay = FindHandicapPlay(a_board);
             location = ExtractLocation(possiblePlay.get(0), possiblePlay.get(1), a_board);
-            reasoning += location + " to start building initiative. The location must be at least three intersections away from the center (J10).";
+            reasoning += location + " to start building initiative. The location must be at least three spaces away from the center (J10).";
             return new Vector<String>(Arrays.asList(location, reasoning));
         }
 
