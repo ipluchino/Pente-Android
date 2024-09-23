@@ -91,3 +91,6 @@ she/he wants to play another round.
    The winner of the tournament is the player who has earned the most number of points over all the rounds.
    If both the players have the same number of points, the tournament is a draw.
   </li></ul>
+
+<h2>Demonstration</h2>
+For a full demonstration of the android application, refer to this video: https://www.youtube.com/watch?v=6Z5stH2wfS4
